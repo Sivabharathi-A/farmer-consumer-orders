@@ -55,7 +55,9 @@ app.get("/home", (req, res) => {
 app.get("/consumer-dashboard", (req, res) => {
     res.render("consumer");  // Render consumer.ejs (Consumer Dashboard)
 });
-
+app.get('/login', (req, res) => {
+    res.render('login'); // or whatever your EJS file is named
+});
 
 // Login User
 app.post("/login", async (req, res) => {
