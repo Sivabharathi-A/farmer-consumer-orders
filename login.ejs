@@ -1,199 +1,844 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farmer & Consumer Login</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="/script.js" defer></script>
+    <title>Farmer Dashboard</title>
+    <link rel="stylesheet" href="farmerstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="script.js" defer></script>
 </head>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url('https://png.pngtree.com/background/20230425/original/pngtree-produce-at-a-local-farmers-market-picture-image_2476446.jpg'); /* Change to your image */
-    background-size: cover;
-    perspective: 1000px;
-}
-
-/* Flip Box Container */
-.container {
-    width: 400px;
-    height: 500px;
-    position: relative;
-}
-
-.flip-box {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s ease-in-out;
-}
-
-.flip-box-inner {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    transform-style: preserve-3d;
-}
-
-.flip-box-front, .flip-box-back {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    backface-visibility: hidden;
-    border-radius: 15px;
-    padding: 30px;
-    display: flex;
-    color: white;
-    flex-direction: column;
-    justify-content: center;
-    backdrop-filter: blur(10px);                 /* blur effect */
-    -webkit-backdrop-filter: blur(10px);         /* Safari support */
-    border: 2px solid black;                     /* black border */
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);   /* optional shadow */
-    width: 400px;
-    text-align: center;
-}
-
-/* Farmer Login */
-.flip-box-front {
-    background: rgba(255, 255, 255, 0.1); 
-}
-
-/* Consumer Login */
-.flip-box-back {
-    background: rgba(255, 255, 255, 0.1); 
-    transform: rotateY(180deg);
-}
-
-/* Input Fields */
-form input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-/* Login & Signup Buttons */
-button {
-    width: 100%;
-    padding: 12px;
-    background: #ff9f43;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    font-weight: bold;
-}
-
-button:hover {
-    background: #ff6f00;
-}
-
-/* Toggle Button */
-.toggle-btn {
-    background: rgba(255, 255, 255, 0.3);
-    border: none;
-    padding: 10px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-    color: white;
-    transition: background 0.3s;
-}
-
-.toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.6);
-}
-
-/* Sign Up Link */
-p {
-    margin-top: 15px;
-    color: white;
-    font-size: 14px;
-}
-
-p a {
-    color: yellow;
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-p a:hover {
-    color: #ffeb3b;
-}
-
-</style>
 <body>
-    <div class="container">
-        <div class="flip-box" id="flipBox">
-            <div class="flip-box-inner">
-                
-                <!-- Farmer Login -->
-                <div class="flip-box-front farmer">
-                    <h2>Farmer Login</h2>
-                    <form action="/login" method="post">
-                        <input type="hidden" name="userType" value="Farmer">
-                        <input type="text" name="username" placeholder="Farmer ID" required>
-                        <input type="password" name="password" placeholder="Password" required>
-                        <button type="submit">Login</button>
-                    </form>
-                    <p>Don't have an account? <a href="/signup">Sign Up</a></p>
-                    <button class="toggle-btn" onclick="flipCard()">Consumer Login</button>
+    <div id="dashboardSection">
+        <header>
+            <h1>Farmer Dashboard</h1>
+            <div class="user-info" onclick="toggleDropdown()">
+                <img src="account.jpg" alt="User" id="userIcon">
+                <div class="dropdown" id="userDropdown">
+                    <p><strong>Username:</strong> <span id="farmerName">Gayathri R</span></p>
+                    <p><strong>Email:</strong> <span id="farmerEmail">gayu@gmail.com</span></p>
+                    <p><strong>Location:</strong> <span id="farmerLocation">India</span></p>
+                    <button id="signOutButton" onclick="signOut()">Sign Out</button>
                 </div>
-
-                <!-- Consumer Login -->
-                <div class="flip-box-back consumer">
-                    <h2>Consumer Login</h2>
-                    <form action="/login" method="post">
-                        <input type="hidden" name="userType" value="Consumer">
-                        <input type="text" name="username" placeholder="Consumer ID" required>
-                        <input type="password" name="password" placeholder="Password" required>
-                        <button type="submit">Login</button>
-                    </form>
-                    <p>Don't have an account? <a href="/signup">Sign Up</a></p>
-                    <button class="toggle-btn" onclick="flipCard()">Farmer Login</button>
-                </div>
-
             </div>
-        </div>
+        </header>
+
+        <main>
+            <section class="carousel">
+                <div class="carousel-inner" id="carouselInner">
+                    <div class="carousel-item">
+                        <img src="5288b9f0-b734-456f-a9ea-b07510eb9bc8.jpeg" alt="Fresh Vegetables">
+                        <h3>Fresh Vegetables</h3>
+                        <p>Get the freshest vegetables delivered to your doorstep.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="33b4102f-75f1-4b07-9694-9205f4ca133f.jpeg" alt="Organic Fruits">
+                        <h3>Organic Fruits</h3>
+                        <p>Enjoy a variety of healthy, organic fruits.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Flux_Dev_Vibrant_and_lively_farmers_market_scene_with_an_abund_0.jpeg"
+                            alt="Healthy Grains">
+                        <h3>Healthy Grains</h3>
+                        <p>We provide various types of healthy grains.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="cd3a1ad3-61f8-4e0a-8fc0-83dd00625353.jpeg" alt="Dairy Products">
+                        <h3>Dairy Products</h3>
+                        <p>Get fresh and pure dairy products.</p>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-control prev" onclick="prevSlide()">❮</button>
+                    <button class="carousel-control next" onclick="nextSlide()">❯</button>
+                </div>
+            </section>
+
+            <section class="service-section">
+                <h2>Our Services</h2>
+                <div class="service-grid">
+                    <div class="service-card">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Product Management</h3>
+                        <p>Easily add and manage your products.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-truck"></i>
+                        <h3>Order Management</h3>
+                        <p>View and manage incoming orders.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Sales Tracking</h3>
+                        <p>Track your sales and completed orders.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-comments"></i>
+                        <h3>Direct Communication</h3>
+                        <p>Chat directly with consumers.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="add-product">
+                <h2>Add Product</h2>
+                <form id="addProductForm">
+                    <label for="productName">Product Name:</label>
+                    <input type="text" id="productName" name="productName" required>
+                
+                    <label for="productCategory">Category:</label>
+                    <select id="productCategory" name="productCategory" required>
+                      <option value="">Select Category</option>
+                      <option value="Vegetables">Vegetables</option>
+                      <option value="Fruits">Fruits</option>
+                      <option value="Grains">Grains</option>
+                      <option value="Dairy">Dairy</option>
+                    </select>
+                
+                    <label for="stock">Stock (kg):</label>
+                    <input type="number" id="stock" name="stock" required>
+                
+                    <label for="daysToExpire">Days Until Expiration:</label>
+                    <input type="number" id="daysToExpire" name="daysToExpire" required>
+                
+                    <label for="expectedDeliveryDays">Expected Delivery Days:</label>
+                    <input type="number" id="expectedDeliveryDays" name="expectedDeliveryDays" required>
+                
+                    <label for="expirationDate">Expiration Date:</label>
+                    <input type="text" id="expirationDate" name="expirationDate" readonly>
+                
+                    <button type="submit">Add Product</button>
+                  </form>
+            </section>
+
+            <section class="product-list">
+                <h2>My Products</h2>
+                <div id="farmerProducts" class="products-grid"></div>
+            </section>
+            <section class="orders incoming-orders product-list">
+                <h2>Incoming Orders</h2>
+                <div id="orderList" class="products-grid" style="background: #fff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                </div>
+            </section>
+
+            <section class="orders completed-orders">
+                <h2>Completed Orders</h2>
+                <div id="completedOrders" style="background: #fff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                </div>
+            </section>
+            <div id="chatbot">
+                <div id="chat-header">Chatbot</div>
+                <div id="chat-body"></div>
+                <input type="text" id="chat-input" placeholder="Type a message...">
+                <button id="send-btn">Send</button>
+            </div>
+            
+            <style>
+                #chatbot {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    height: 200px;
+                    width: 300px;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    display: flex;
+                    flex-direction: column;
+                }
+                #chat-header {
+                    background: #4CAF50;
+                    color: white;
+                    padding: 10px;
+                    text-align: center;
+                    cursor: pointer;
+                }
+                #chat-body {
+                    height: 300px;
+                    overflow-y: auto;
+                    padding: 10px;
+                }
+                #chat-input {
+                    width: 100%;
+                    padding: 10px;
+                    border: none;
+                    border-top: 1px solid #ccc;
+                }
+                #send-btn {
+                    width: 100%;
+                    padding: 10px;
+                    background: #4CAF50;
+                    color: white;
+                    border: none;
+                    cursor: pointer;
+                }
+            </style>
+            
+            <section class="chat">
+                <h2>Chat with Consumers</h2>
+                <div id="chatBox"></div>
+                <input type="text" id="chatInput" placeholder="Type a message..." style="border-width: 0.5px;">
+                <button onclick="sendMessage()"
+                    style="border: none;background-color: #12c471;width: 70px;border-radius: 50px; padding: 8px;">Send</button>
+            </section>
+        </main>
+        <footer style="background-color: #4CAF50; color: white; padding: 20px 10px; text-align: center; margin-top: 50px;">
+            <!-- Copyright -->
+            <div>
+                <p style="margin-top: 10px;flex: 1;">&copy; 2025 Farmer-Consumer. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+        <style>
+            footer div {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            footer a {
+                text-decoration: none;
+                font-size: 18px;
+            }
+
+            @media (max-width: 768px) {
+                footer div {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                footer div>div {
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <!-- FontAwesome for Icons -->
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     </div>
+
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            if (index < 0) {
+                currentIndex = totalSlides - 1;
+            } else if (index >= totalSlides) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+
+            const newTransformValue = -currentIndex * 100 + '%';
+            document.getElementById('carouselInner').style.transform = ` translateX(${newTransformValue})  `;
+        }
+
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+
+        setInterval(nextSlide, 5000);
+        function toggleDropdown() {
+            let dropdown = document.getElementById("userDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+        function toggleDropdown() {
+            let dropdown = document.getElementById("userDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        function signOut() {
+    // Clear session or localStorage
+    localStorage.removeItem("farmerLoggedIn");
+
+    // Redirect to the login route that renders your EJS page
+    window.location.href = "/login"; // This should match your backend route
+}
+
+        // Product Handling - Add Product
+        document.addEventListener("DOMContentLoaded", function () {
+      updateExpirationDates();
+      displayProducts();
+    });
+
+    function updateExpirationDates() {
+      let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+      let today = new Date();
+
+      products.forEach(product => {
+        let expiration = new Date(product.expirationDate);
+        let diffDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
+        product.daysToExpire = diffDays > 0 ? diffDays : 0;
+      });
+
+      localStorage.setItem("farmerProducts", JSON.stringify(products));
+      displayProducts();
+    }
+
+    document.getElementById("daysToExpire").addEventListener("input", function () {
+      const daysToExpire = parseInt(this.value);
+      if (!isNaN(daysToExpire)) {
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + daysToExpire);
+        document.getElementById("expirationDate").value = expirationDate.toISOString().split('T')[0];
+      }
+    });
+
+    document.getElementById("addProductForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const productName = document.getElementById("productName").value;
+      const category = document.getElementById("productCategory").value;
+      const stock = parseFloat(document.getElementById("stock").value);
+      const daysToExpire = parseInt(document.getElementById("daysToExpire").value);
+      const expectedDeliveryDays = parseInt(document.getElementById("expectedDeliveryDays").value);
+      const expirationDate = document.getElementById("expirationDate").value;
+
+      const newProduct = {
+        productName,
+        category,
+        stock,
+        daysToExpire,
+        expectedDeliveryDays,
+        expirationDate
+      };
+
+      const products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+      products.push(newProduct);
+      localStorage.setItem("farmerProducts", JSON.stringify(products));
+
+      updateExpirationDates();
+      document.getElementById("addProductForm").reset();
+    });
+
+    setInterval(updateExpirationDates, 86400000);
+        // document.getElementById("addProductForm").addEventListener("submit", function (event) {
+        //     event.preventDefault();
+
+        //     let productName = document.getElementById("productName").value;
+        //     let price = document.getElementById("price").value;
+        //     let category = document.getElementById("productCategory").value;
+        //     let stock = document.getElementById("stock").value; // Get stock
+
+        //     let product = { productName, price, category, stock }; // Include stock
+
+        //     let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+        //     products.push(product);
+        //     localStorage.setItem("farmerProducts", JSON.stringify(products));
+
+        //     displayProducts();
+        //     document.getElementById("addProductForm").reset(); // Clear form
+        // });
+
+        // Function to Display Products
+        function displayProducts() {
+    let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+    let productContainer = document.getElementById("farmerProducts");
+    productContainer.innerHTML = "";
+
+    if (products.length === 0) {
+        productContainer.innerHTML = "<p>No products added yet.</p>";
+        return;
+    }
+
+    products.forEach((product, index) => {
+        let productElement = document.createElement("div");
+        productElement.classList.add("product-card");
+        productElement.innerHTML = `
+            <h3>${product.productName}</h3>
+            <p><strong>Category:</strong> ${product.category}</p>
+            <p><strong>Stock:</strong> ${product.stock}</p>
+            <p><strong>Days to Expire:</strong> ${product.daysToExpire}</p>
+            <p><strong>Expected Delivery Days:</strong> ${product.expectedDeliveryDays}</p>
+            <p><strong>Expiration Date:</strong> ${product.expirationDate}</p>
+            <button onclick="deleteProduct(${index})">Delete</button>
+        `;
+        productContainer.appendChild(productElement);
+    });
+}
+
+
+        // Function to Delete a Product
+        function deleteProduct(index) {
+            let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+            products.splice(index, 1);
+            localStorage.setItem("farmerProducts", JSON.stringify(products));
+            displayProducts();
+        }
+
+        // Load products on page load
+        document.addEventListener("DOMContentLoaded", displayProducts);
+        function displayIncomingOrders() {
+            let orders = JSON.parse(localStorage.getItem("orders")) || [];
+            let orderList = document.getElementById("orderList");  // Correct ID here
+            orderList.innerHTML = "";
+
+            // Filter orders for the logged-in farmer (using the hardcoded name for now)
+            let farmerOrders = orders.filter(order => order.farmerName === "John Doe"); // Use actual farmer name
+
+            if (farmerOrders.length === 0) {
+                orderList.innerHTML = "<p>No incoming orders.</p>";
+                return;
+            }
+
+            farmerOrders.forEach((order, index) => {
+                let orderElement = document.createElement("div");
+                orderElement.classList.add("order");
+                orderElement.innerHTML = `
+                    <p><strong>Order ID:</strong> ${order.orderId}</p>
+                    <p><strong>Customer:</strong> ${order.customerName}</p>
+                    <p><strong>Product:</strong> ${order.productName}</p>
+                    <p><strong>Quantity:</strong> ${order.quantity}</p>
+                    <p><strong>Price:</strong> ₹${order.price}</p>
+                    <p><strong>Status:</strong> <span id="orderStatus${order.orderId}">Pending</span></p>
+                    <button onclick="completeOrder('${order.orderId}')">Complete Order</button>
+                `;
+                orderList.appendChild(orderElement);
+            });
+        }
+        function completeOrder(orderId) {
+            let orders = JSON.parse(localStorage.getItem("orders")) || [];
+            let orderIndex = orders.findIndex(order => order.orderId === orderId);
+
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = "Completed"; // Update order status
+                localStorage.setItem("orders", JSON.stringify(orders));
+
+                // Move order to completed orders section (optional, you can just update status)
+                let completedOrder = orders.splice(orderIndex, 1)[0]; //remove from incoming
+                let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
+                completedOrders.push(completedOrder);
+                localStorage.setItem("completedOrders", JSON.stringify(completedOrders));
+
+                localStorage.setItem("orders", JSON.stringify(orders)); // Save changes
+
+                displayIncomingOrders(); // Refresh incoming orders list
+                displayCompletedOrders();
+                // Update the status text directly
+                let statusSpan = document.getElementById(`orderStatus${orderId}`);
+                if (statusSpan) {
+                    statusSpan.textContent = "Completed";
+                }
+
+            }
+        }
+        function displayCompletedOrders() {
+            let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
+            let completedOrdersContainer = document.getElementById("completedOrders");
+            completedOrdersContainer.innerHTML = "";
+
+            // Filter completed orders for the logged-in farmer
+            let farmerCompletedOrders = completedOrders.filter(order => order.farmerName === "John Doe");
+
+            if (farmerCompletedOrders.length === 0) {
+                completedOrdersContainer.innerHTML = "<p>No completed orders.</p>";
+                return;
+            }
+
+            farmerCompletedOrders.forEach(order => {
+                let orderElement = document.createElement("div");
+                orderElement.classList.add("order");
+                orderElement.innerHTML = `
+                    <p><strong>Order ID:</strong> ${order.orderId}</p>
+                    <p><strong>Customer:</strong> ${order.customerName}</p>
+                    <p><strong>Product:</strong> ${order.productName}</p>
+                    <p><strong>Quantity:</strong> ${order.quantity}</p>
+                    <p><strong>Price:</strong> ₹${order.price}</p>
+                    <p><strong>Status:</strong> Completed</p>
+                `;
+                completedOrdersContainer.appendChild(orderElement);
+            });
+        }
+
+        // Load orders on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            displayIncomingOrders();
+            displayCompletedOrders();
+        });
+        function sendMessage() {
+            let chatBox = document.getElementById("chatBox");
+            let chatInput = document.getElementById("chatInput");
+            let message = chatInput.value.trim();
+            if (message !== "") {
+                let msgElement = document.createElement("p");
+                msgElement.textContent = "Farmer: " + message;
+                chatBox.appendChild(msgElement);
+                chatInput.value = "";
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            flex: 1 0 auto;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .carousel-item h3 {
+            font-size: 24px;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .carousel-item p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .carousel-control {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-control:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .service-section {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f8f8;
+            margin-top: 50px;
+            border-radius: 8px;
+        }
+
+        .service-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            margin-top: 30px;
+        }
+
+        .service-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: black;
+        }
+
+        .service-card p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .service-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        #completedOrders {
+
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .user-info {
+            position: relative;
+            cursor: pointer;
+        }
+
+        #userIcon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            width: 200px;
+        }
+
+        .dropdown p {
+            margin: 5px 0;
+        }
+
+        #signOutButton {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #signOutButton:hover {
+            background-color: #d32f2f;
+        }
+
+        .product-list h2 {
+            text-align: center;
+        }
+
+        .orders,
+        .products,
+        .chat {
+            background: white;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Product List Styling */
+        .products-grid {
+            gap: 15px;
+            padding: 15px;
+            display: block;
+            text-align: center;
+        }
+
+        .product-card {
+            width: 250px;
+            height: 250px;
+            margin: 10px 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .product-card h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .product-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .incoming-orders {
+            border-left: 5px solid #ff9800;
+        }
+
+        .completed-orders {
+            border-left: 5px solid #4CAF50;
+        }
+
+        .chat {
+            border-left: 5px solid #3f51b5;
+        }
+
+        .chat h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        #chatBox {
+            height: 150px;
+            overflow-y: auto;
+            background: #eef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        #chatInput {
+            border: 1px solid #ccc;
+            padding: 8px;
+            width: calc(40% - 100px);
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+    </style>
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const flipBox = document.getElementById("flipBox");
+    document.getElementById("chat-header").addEventListener("click", function () {
+    let chatbot = document.getElementById("chatbot");
+    chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
+});
 
-    window.flipCard = function () {
-        if (flipBox.style.transform === "rotateY(180deg)") {
-            flipBox.style.transform = "rotateY(0deg)";
-        } else {
-            flipBox.style.transform = "rotateY(180deg)";
-        }
-    };
+
+document.getElementById("send-btn").addEventListener("click", async function () {
+    let input = document.getElementById("chat-input");
+    let message = input.value.trim();
+    if (!message) return;
+
+    appendMessage("You: " + message, "user");
+
+    // Send message to backend
+    const response = await fetch("http://localhost:5500/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+    });
+
+    const data = await response.json();
+    appendMessage("Bot: " + data.reply, "bot");
+    input.value = "";
+});
+
+function appendMessage(text, sender) {
+    let chatBody = document.getElementById("chat-body");
+    let msg = document.createElement("div");
+    msg.textContent = text;
+    msg.style.padding = "8px";
+    msg.style.margin = "5px 0";
+    msg.style.borderRadius = "5px";
+    msg.style.background = sender === "user" ? "#d1ffd1" : "#f1f1f1";
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+document.getElementById("send-btn").addEventListener("click", function () {
+    let userInput = document.getElementById("chat-input").value;
+    if (userInput.trim() === "") return; // Ignore empty messages
+
+    let chatBody = document.getElementById("chat-body");
+
+    // Display user message
+    let userMessage = document.createElement("p");
+    userMessage.textContent = "You: " + userInput;
+    chatBody.appendChild(userMessage);
+
+    // Send message to the chatbot backend
+    fetch("/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userInput }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Display bot response
+            let botMessage = document.createElement("p");
+            botMessage.textContent = "Bot: " + data.reply;
+            chatBody.appendChild(botMessage);
+        })
+        .catch(error => console.error("Error:", error));
+
+    // Clear input field
+    document.getElementById("chat-input").value = "";
 });
 
 </script>
 </html>
-
