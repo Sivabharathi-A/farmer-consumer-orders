@@ -29,25 +29,17 @@
             <section class="carousel">
                 <div class="carousel-inner" id="carouselInner">
                     <div class="carousel-item">
-                        <img src="5288b9f0-b734-456f-a9ea-b07510eb9bc8.jpeg" alt="Fresh Vegetables">
-                        <h3>Fresh Vegetables</h3>
-                        <p>Get the freshest vegetables delivered to your doorstep.</p>
+                        <img src="https://wholeharvest.com/cdn/shop/articles/Blog_Banner_-_Whole_Harvest_3_d8ec6712-b908-4227-9d25-d4b55aaa42ae.png?v=1658790163&width=1100" alt="Fresh Vegetables">
                     </div>
                     <div class="carousel-item">
-                        <img src="33b4102f-75f1-4b07-9694-9205f4ca133f.jpeg" alt="Organic Fruits">
-                        <h3>Organic Fruits</h3>
-                        <p>Enjoy a variety of healthy, organic fruits.</p>
+                        <img src="https://foodsafetyhelpline.com/wp-content/uploads/2021/06/fresh-fruits-and-vegetables-UBENQCQ.jpg" alt="Organic Fruits">
                     </div>
                     <div class="carousel-item">
-                        <img src="Flux_Dev_Vibrant_and_lively_farmers_market_scene_with_an_abund_0.jpeg"
+                        <img src="https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8b3JnYW5pYyUyMGZvb2R8ZW58MHx8MHx8fDA%3D"
                             alt="Healthy Grains">
-                        <h3>Healthy Grains</h3>
-                        <p>We provide various types of healthy grains.</p>
                     </div>
                     <div class="carousel-item">
-                        <img src="cd3a1ad3-61f8-4e0a-8fc0-83dd00625353.jpeg" alt="Dairy Products">
-                        <h3>Dairy Products</h3>
-                        <p>Get fresh and pure dairy products.</p>
+                        <img src="https://watchusgrow.org/wp-content/uploads/2019/08/organic-conventional_opt1_mobile.jpeg" alt="Dairy Products">
                     </div>
                 </div>
                 <div class="carousel-controls">
@@ -95,6 +87,8 @@
                       <option value="Grains">Grains</option>
                       <option value="Dairy">Dairy</option>
                     </select>
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" required>
                 
                     <label for="stock">Stock (kg):</label>
                     <input type="number" id="stock" name="stock" required>
@@ -118,77 +112,179 @@
             </section>
             <section class="orders incoming-orders product-list">
                 <h2>Incoming Orders</h2>
-                <div id="orderList" class="products-grid" style="background: #fff;
-                padding: 15px;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <div id="orderList" class="products-grid">
+            
+                    <div class="order-item status-processing">
+                        <h3>Order #1</h3>
+                        <div class="order-details">
+                            <p><strong>Customer Name:</strong> Priya Sharma</p>
+                            <p><strong>Products:</strong>
+                                <ul>
+                                    <li>Vegetable: Carrot (2 kg)</li>
+                                    <li>Vegetable: Potato (3 kg)</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-label">Processing</span>
+                    </div>
+            
+                    <div class="order-item status-pending">
+                        <h3>Order #2</h3>
+                        <div class="order-details">
+                            <p><strong>Customer Name:</strong> Rohan Verma</p>
+                            <p><strong>Products:</strong>
+                                <ul>
+                                    <li>Vegetable: Tomato (1.5 kg)</li>
+                                    <li>Fruit: Mango (2 dozen)</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-label">Pending</span>
+                    </div>
+            
+                    <div class="order-item status-shipped">
+                        <h3>Order #3</h3>
+                        <div class="order-details">
+                            <p><strong>Customer Name:</strong> Sneha Patel</p>
+                            <p><strong>Products:</strong>
+                                <ul>
+                                    <li>Grain: Rice (5 kg)</li>
+                                    <li>Vegetable: Onion (1 kg)</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-label">Shipped</span>
+                    </div>
+            
+                    <div class="order-item status-delivered">
+                        <h3>Order #4</h3>
+                        <div class="order-details">
+                            <p><strong>Customer Name:</strong> Karthik Nair</p>
+                            <p><strong>Products:</strong>
+                                <ul>
+                                    <li>Vegetable: Beetroot (1 kg)</li>
+                                    <li>Fruit: Banana (1 dozen)</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-label">Delivered</span>
+                    </div>
+            
                 </div>
             </section>
 
-            <section class="orders completed-orders">
-                <h2>Completed Orders</h2>
-                <div id="completedOrders" style="background: #fff;
-                padding: 15px;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                </div>
-            </section>
-            <div id="chatbot">
-                <div id="chat-header">Chatbot</div>
-                <div id="chat-body"></div>
-                <input type="text" id="chat-input" placeholder="Type a message...">
-                <button id="send-btn">Send</button>
-            </div>
+                        <!-- Chatbot Button -->
+    <button id="chatbot-button">💬</button>
+
+    <!-- Chatbot Window -->
+    <div id="chatbot">
+        <div id="chat-header">Chatbot
+            <button id="close-btn">✖</button>
+        </div>
+        <div id="chat-body"></div>
+        <input type="text" id="chat-input" placeholder="Type a message...">
+        <button id="send-btn">Send</button>
+    </div>
             
             <style>
-                #chatbot {
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    height: 200px;
-                    width: 300px;
-                    background: white;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                    display: flex;
-                    flex-direction: column;
-                }
-                #chat-header {
-                    background: #4CAF50;
-                    color: white;
-                    padding: 10px;
-                    text-align: center;
-                    cursor: pointer;
-                }
-                #chat-body {
-                    height: 300px;
-                    overflow-y: auto;
-                    padding: 10px;
-                }
-                #chat-input {
-                    width: 100%;
-                    padding: 10px;
-                    border: none;
-                    border-top: 1px solid #ccc;
-                }
-                #send-btn {
-                    width: 100%;
-                    padding: 10px;
-                    background: #4CAF50;
-                    color: white;
-                    border: none;
-                    cursor: pointer;
-                }
+                #chatbot-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Chatbot window (hidden initially) */
+        #chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+
+        /* Chat header */
+        #chat-header {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Close button */
+        #close-btn {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Chat body */
+        #chat-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        /* Chat input */
+        #chat-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        /* Send button */
+        #send-btn {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
             </style>
             
-            <section class="chat">
-                <h2>Chat with Consumers</h2>
-                <div id="chatBox"></div>
-                <input type="text" id="chatInput" placeholder="Type a message..." style="border-width: 0.5px;">
-                <button onclick="sendMessage()"
-                    style="border: none;background-color: #12c471;width: 70px;border-radius: 50px; padding: 8px;">Send</button>
-            </section>
         </main>
         <footer style="background-color: #4CAF50; color: white; padding: 20px 10px; text-align: center; margin-top: 50px;">
             <!-- Copyright -->
@@ -253,14 +349,12 @@
         }
 
         setInterval(nextSlide, 5000);
+        
         function toggleDropdown() {
             let dropdown = document.getElementById("userDropdown");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
-        function toggleDropdown() {
-            let dropdown = document.getElementById("userDropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        }
+
 
         function signOut() {
     // Clear session or localStorage
@@ -305,6 +399,7 @@
       const productName = document.getElementById("productName").value;
       const category = document.getElementById("productCategory").value;
       const stock = parseFloat(document.getElementById("stock").value);
+      const price = parseInt(document.getElementById("price").value);
       const daysToExpire = parseInt(document.getElementById("daysToExpire").value);
       const expectedDeliveryDays = parseInt(document.getElementById("expectedDeliveryDays").value);
       const expirationDate = document.getElementById("expirationDate").value;
@@ -313,6 +408,7 @@
         productName,
         category,
         stock,
+        price,
         daysToExpire,
         expectedDeliveryDays,
         expirationDate
@@ -327,51 +423,29 @@
     });
 
     setInterval(updateExpirationDates, 86400000);
-        // document.getElementById("addProductForm").addEventListener("submit", function (event) {
-        //     event.preventDefault();
-
-        //     let productName = document.getElementById("productName").value;
-        //     let price = document.getElementById("price").value;
-        //     let category = document.getElementById("productCategory").value;
-        //     let stock = document.getElementById("stock").value; // Get stock
-
-        //     let product = { productName, price, category, stock }; // Include stock
-
-        //     let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
-        //     products.push(product);
-        //     localStorage.setItem("farmerProducts", JSON.stringify(products));
-
-        //     displayProducts();
-        //     document.getElementById("addProductForm").reset(); // Clear form
-        // });
-
-        // Function to Display Products
         function displayProducts() {
-    let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
-    let productContainer = document.getElementById("farmerProducts");
-    productContainer.innerHTML = "";
+            let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+            let productContainer = document.getElementById("farmerProducts");
+            productContainer.innerHTML = "";
 
-    if (products.length === 0) {
-        productContainer.innerHTML = "<p>No products added yet.</p>";
-        return;
-    }
+            if (products.length === 0) {
+                productContainer.innerHTML = "<p>No products added yet.</p>";
+                return;
+            }
 
-    products.forEach((product, index) => {
-        let productElement = document.createElement("div");
-        productElement.classList.add("product-card");
-        productElement.innerHTML = `
-            <h3>${product.productName}</h3>
-            <p><strong>Category:</strong> ${product.category}</p>
-            <p><strong>Stock:</strong> ${product.stock}</p>
-            <p><strong>Days to Expire:</strong> ${product.daysToExpire}</p>
-            <p><strong>Expected Delivery Days:</strong> ${product.expectedDeliveryDays}</p>
-            <p><strong>Expiration Date:</strong> ${product.expirationDate}</p>
-            <button onclick="deleteProduct(${index})">Delete</button>
-        `;
-        productContainer.appendChild(productElement);
-    });
-}
-
+            products.forEach((product, index) => {
+                let productElement = document.createElement("div");
+                productElement.classList.add("product-card");
+                productElement.innerHTML = `
+                    <h3>${product.productName}</h3>
+                    <p>Price: ₹${product.price}</p>
+                    <p>Category: ${product.category}</p>
+                    <p>Stock: ${product.stock}</p> 
+                    <button onclick="deleteProduct(${index})">Delete</button>
+                `;
+                productContainer.appendChild(productElement);
+            });
+        }
 
         // Function to Delete a Product
         function deleteProduct(index) {
@@ -383,34 +457,34 @@
 
         // Load products on page load
         document.addEventListener("DOMContentLoaded", displayProducts);
-        function displayIncomingOrders() {
-            let orders = JSON.parse(localStorage.getItem("orders")) || [];
-            let orderList = document.getElementById("orderList");  // Correct ID here
-            orderList.innerHTML = "";
+        // function displayIncomingOrders() {
+        //     let orders = JSON.parse(localStorage.getItem("orders")) || [];
+        //     let orderList = document.getElementById("orderList");  // Correct ID here
+        //     orderList.innerHTML = "";
 
-            // Filter orders for the logged-in farmer (using the hardcoded name for now)
-            let farmerOrders = orders.filter(order => order.farmerName === "John Doe"); // Use actual farmer name
+        //     // Filter orders for the logged-in farmer (using the hardcoded name for now)
+        //     let farmerOrders = orders.filter(order => order.farmerName === "John Doe"); // Use actual farmer name
 
-            if (farmerOrders.length === 0) {
-                orderList.innerHTML = "<p>No incoming orders.</p>";
-                return;
-            }
+        //     if (farmerOrders.length === 0) {
+        //         orderList.innerHTML = "<p>No incoming orders.</p>";
+        //         return;
+        //     }
 
-            farmerOrders.forEach((order, index) => {
-                let orderElement = document.createElement("div");
-                orderElement.classList.add("order");
-                orderElement.innerHTML = `
-                    <p><strong>Order ID:</strong> ${order.orderId}</p>
-                    <p><strong>Customer:</strong> ${order.customerName}</p>
-                    <p><strong>Product:</strong> ${order.productName}</p>
-                    <p><strong>Quantity:</strong> ${order.quantity}</p>
-                    <p><strong>Price:</strong> ₹${order.price}</p>
-                    <p><strong>Status:</strong> <span id="orderStatus${order.orderId}">Pending</span></p>
-                    <button onclick="completeOrder('${order.orderId}')">Complete Order</button>
-                `;
-                orderList.appendChild(orderElement);
-            });
-        }
+        //     farmerOrders.forEach((order, index) => {
+        //         let orderElement = document.createElement("div");
+        //         orderElement.classList.add("order");
+        //         orderElement.innerHTML = `
+        //             <p><strong>Order ID:</strong> ${order.orderId}</p>
+        //             <p><strong>Customer:</strong> ${order.customerName}</p>
+        //             <p><strong>Product:</strong> ${order.productName}</p>
+        //             <p><strong>Quantity:</strong> ${order.quantity}</p>
+        //             <p><strong>Price:</strong> ₹${order.price}</p>
+        //             <p><strong>Status:</strong> <span id="orderStatus${order.orderId}">Pending</span></p>
+        //             <button onclick="completeOrder('${order.orderId}')">Complete Order</button>
+        //         `;
+        //         orderList.appendChild(orderElement);
+        //     });
+        //}
         function completeOrder(orderId) {
             let orders = JSON.parse(localStorage.getItem("orders")) || [];
             let orderIndex = orders.findIndex(order => order.orderId === orderId);
@@ -714,11 +788,12 @@
 
         .product-card {
             width: 250px;
-            height: 250px;
+            height: relative;
             margin: 10px 10px;
             background-color: white;
             border: 1px solid #ccc;
             padding-top: 10px;
+            padding-bottom: 5%;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             display: inline-block;
@@ -739,106 +814,166 @@
         .incoming-orders {
             border-left: 5px solid #ff9800;
         }
-
-        .completed-orders {
-            border-left: 5px solid #4CAF50;
+        /* Style for the main orders section */
+ /* Style for the main orders section */
+ .orders.incoming-orders.product-list {
+            margin-bottom: 30px;
         }
 
-        .chat {
-            border-left: 5px solid #3f51b5;
-        }
-
-        .chat h2 {
-            text-align: center;
-            font-size: 28px;
+        /* Style for the heading */
+        .orders.incoming-orders.product-list h2 {
+            color: #333;
+            border-bottom: 2px solid #5cb85c;
+            padding-bottom: 10px;
             margin-bottom: 20px;
-            color: #2c3e50;
         }
 
-        #chatBox {
-            height: 150px;
-            overflow-y: auto;
-            background: #eef;
-            padding: 10px;
-            border-radius: 5px;
+        /* Style for the products grid container */
+        .orders.incoming-orders.product-list #orderList.products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for each individual order item */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        /* Style for the order item heading (Order #) */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item h3 {
+            color: #337ab7;
+            margin-top: 0;
             margin-bottom: 10px;
+            font-size: 1.5em;
         }
 
-        #chatInput {
-            border: 1px solid #ccc;
-            padding: 8px;
-            width: calc(40% - 100px);
-            margin-right: 10px;
+        /* Style for the order details container */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item .order-details p {
+            margin-bottom: 8px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Style for bold text within order details */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item .order-details strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Style for the progress container */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item .progress-container {
+            background-color: #e9ecef;
             border-radius: 5px;
+            height: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        /* Style for the progress bar */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item .progress-bar {
+            background-color: #5cb85c;
+            height: 100%;
+            border-radius: 5px;
+            width: 0%; /* Will be updated based on status */
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Style for the progress label */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item .progress-label {
+            display: block;
+            margin-top: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #444;
+            text-align: right;
+        }
+
+        /* Specific progress statuses */
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item.status-pending .progress-bar {
+            background-color: #f0ad4e;
+            width: 25%;
+        }
+
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item.status-processing .progress-bar {
+            background-color: #007bff;
+            width: 50%;
+        }
+
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item.status-shipped .progress-bar {
+            background-color: #6c757d;
+            width: 75%;
+        }
+
+        .orders.incoming-orders.product-list #orderList.products-grid .order-item.status-delivered .progress-bar {
+            background-color: #28a745;
+            width: 100%;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 600px) {
+            .orders.incoming-orders.product-list #orderList.products-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </body>
 <script>
-    document.getElementById("chat-header").addEventListener("click", function () {
-    let chatbot = document.getElementById("chatbot");
-    chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
-});
+   const chatbotButton = document.getElementById("chatbot-button");
+        const chatbot = document.getElementById("chatbot");
+        const closeButton = document.getElementById("close-btn");
 
+        // Show chatbot when button is clicked
+        chatbotButton.addEventListener("click", () => {
+            chatbot.style.display = "flex";
+            chatbotButton.style.display = "none"; // Hide button when expanded
+        });
 
-document.getElementById("send-btn").addEventListener("click", async function () {
-    let input = document.getElementById("chat-input");
-    let message = input.value.trim();
-    if (!message) return;
+        // Hide chatbot when close button is clicked
+        closeButton.addEventListener("click", () => {
+            chatbot.style.display = "none";
+            chatbotButton.style.display = "flex"; // Show button again
+        });
 
-    appendMessage("You: " + message, "user");
+        // Sending message
+        document.getElementById("send-btn").addEventListener("click", async function () {
+            let input = document.getElementById("chat-input");
+            let message = input.value.trim();
+            if (!message) return;
 
-    // Send message to backend
-    const response = await fetch("http://localhost:5500/api/chatbot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
-    });
+            appendMessage("You: " + message, "user");
 
-    const data = await response.json();
-    appendMessage("Bot: " + data.reply, "bot");
-    input.value = "";
-});
+            // Send message to backend
+            const response = await fetch("http://localhost:5500/api/chatbot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
 
-function appendMessage(text, sender) {
-    let chatBody = document.getElementById("chat-body");
-    let msg = document.createElement("div");
-    msg.textContent = text;
-    msg.style.padding = "8px";
-    msg.style.margin = "5px 0";
-    msg.style.borderRadius = "5px";
-    msg.style.background = sender === "user" ? "#d1ffd1" : "#f1f1f1";
-    chatBody.appendChild(msg);
-    chatBody.scrollTop = chatBody.scrollHeight;
-}
-document.getElementById("send-btn").addEventListener("click", function () {
-    let userInput = document.getElementById("chat-input").value;
-    if (userInput.trim() === "") return; // Ignore empty messages
+            const data = await response.json();
+            appendMessage("Bot: " + data.reply, "bot");
+            input.value = "";
+        });
 
-    let chatBody = document.getElementById("chat-body");
-
-    // Display user message
-    let userMessage = document.createElement("p");
-    userMessage.textContent = "You: " + userInput;
-    chatBody.appendChild(userMessage);
-
-    // Send message to the chatbot backend
-    fetch("/chatbot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userInput }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Display bot response
-            let botMessage = document.createElement("p");
-            botMessage.textContent = "Bot: " + data.reply;
-            chatBody.appendChild(botMessage);
-        })
-        .catch(error => console.error("Error:", error));
-
-    // Clear input field
-    document.getElementById("chat-input").value = "";
-});
+        function appendMessage(text, sender) {
+            let chatBody = document.getElementById("chat-body");
+            let msg = document.createElement("div");
+            msg.textContent = text;
+            msg.style.padding = "8px";
+            msg.style.margin = "5px 0";
+            msg.style.borderRadius = "5px";
+            msg.style.background = sender === "user" ? "#d1ffd1" : "#f1f1f1";
+            chatBody.appendChild(msg);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
 
 </script>
 </html>
