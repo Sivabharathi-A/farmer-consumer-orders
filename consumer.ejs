@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Dashboard</title>
+    <link rel="stylesheet" href="consumerstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <script src="script.js" defer></script>
+</head>
+<style>
+    /* Original CSS (consumerstyle.css) with modifications */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+.container {
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+
+    background-color: white;
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    height: 5px;
+    background: #ddd;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.progress-step {
+    width: 40px;
+    height: 40px;
+    background: #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #666;
+    z-index: 2;
+    position: relative;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.progress-step.active {
+    background: #007bff;
+    color: white;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.status {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 40%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.star {
+    font-size: 30px;
+    cursor: pointer;
+    color: gray;
+    transition: color 0.3s;
+}
+
+.star.selected {
+    color: gold;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+.popup button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+#feedbackSection {
+    display: none;
+    /* Hides feedback until order is placed */
+}
+
+#feedbackPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Popup Background */
+.popup {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Transparent Black */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Popup Box */
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close Button */
+#closePopup {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    background: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#closePopup:hover {
+    background: #218838;
+}
+
+#signOutButton {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#signOutButton:hover {
+    background-color: #d32f2f;
+}
+
+.carousel {
+    background-color: white;
+    position: relative;
+    width: 100%;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    flex: 1 0 auto;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.carousel-item img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.carousel-item h3 {
+    font-size: 24px;
+    margin-top: 10px;
+    color: #333;
+}
+
+.carousel-item p {
+    font-size: 16px;
+    color: #555;
+}
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.carousel-control {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-control:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.service-section {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    margin-top: 50px;
+    border-radius: 8px;
+}
+
+.service-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 60px;
+    margin-top: 30px;
+}
+
+.service-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+
+.service-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: black;
+}
+
+.service-card p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.service-card i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #54b6eb;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #54b6eb;
+    color: white;
+    padding: 15px 20px;
+}
+
+h1 {
+    margin: 0;
+}
+
+.user-info {
+    position: relative;
+    cursor: pointer;
+}
+
+#userIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 200px;
+}
+
+.dropdown p {
+    margin: 5px 0;
+}
+
+
+.filter-section {
+    background: white;
+    padding: 20px;
+    margin: 5% 10%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section h2 {
+    margin-top: 0;
+}
+
+.filter-section input,
+.filter-section select,
+.filter-section button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-section button {
+    background: #54b6eb;
+    color: black;
+    cursor: pointer;
+    width: 200px;
+    display: block; /* Make the button a block element */
+    margin: 0 auto; /* Center horizontally */
+}
+
+.filter-section button:hover {
+    background: #77dbff;
+    /* Darker Blue */
+}
+
+.product-list,
+.wishlist-section,
+.cart-section,
+.chat {
+    background: white;
+    padding: 30px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product-list h2,
+.wishlist-section h2,
+.cart-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.products {
+    display: block;
+    text-align: center;
+
+}
+
+.product-item {
+    width: 250px;
+    height: 250px;
+    margin: 10px 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding-top: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-item h3 {
+    margin: 10px 0;
+    color: #333;
+}
+
+.product-item p {
+    font-size: 14px;
+    color: #666;
+}
+
+.product-list {
+    border-left: 5px solid #ff9800;
+}
+
+.wishlist-section {
+    border-left: 5px solid #4CAF50;
+}
+
+.cart-section {
+    border-left: 5px solid #3f51b5;
+}
+
+.wishlist-button,
+.cart-button {
+    margin: 5px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    width: 80%;
+    max-width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 18px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.wishlist-button {
+    background: linear-gradient(to right, #77dbff, #54b6eb);
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.wishlist-button:hover {
+    background: linear-gradient(to right, #7fceff, #54b6eb);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+.cart-button {
+    background: linear-gradient(to right, #ffdb58, #f4c86a);
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cart-button:hover {
+    background: linear-gradient(to right, #ffe57f, #eac650);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+
+.remove-wishlist,
+.remove-cart {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 80%;
+    max-width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.remove-wishlist,
+.remove-cart {
+    background: linear-gradient(to right, #ef5350, #f44336);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.remove-wishlist:hover,
+.remove-cart:hover {
+    background: linear-gradient(to right, #f66a65, #e53935);
+    transform: scale(1.05);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+.chat {
+    border-left: 5px solid #3f51b5;
+
+}
+
+.chat h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+#chatBox {
+    height: 150px;
+    overflow-y: auto;
+    background: #eef;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+
+}
+
+#chatInput {
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: calc(40% - 100px);
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+#orderButton {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 20px;
+    width: 200px;
+    /* Increased width of the order button */
+    align-self: center;
+    /* Center the order button */
+}
+#orderTrackingSection {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    /* display: none; Initially hidden */
+    text-align: center;
+    z-index: 0;
+}
+#orderTrackingSection h2{
+    margin-bottom: 20px;
+}
+#orderButton:hover {
+    background: #45a049;
+}
+</style>
+<body>
+    <div id="dashboardSection">
+        <header>
+            <h1>Consumer Dashboard</h1>
+        
+        <div class="user-info" onclick="toggleDropdown()">
+            <!-- <a href="https://www.flaticon.com/free-icons/user" title="user icons"></a> -->
+            <img src="account.jpg" alt="User" id="userIcon">
+            <div class="dropdown" id="userDropdown">
+                <p><strong>Username:</strong> <span id="farmerName">Siva Bharathi A</span></p>
+                <p><strong>Email:</strong> <span id="farmerEmail">sivu@gmail.com</span></p>
+                <p><strong>Location:</strong> <span id="farmerLocation">India</span></p>
+                <button id="signOutButton" onclick="signOut()">Sign Out</button>
+            </div>
+        </div>
+    </header>
+        <main>
+            <section class="carousel">
+                <div class="carousel-inner" id="carouselInner">
+                    <div class="carousel-item">
+                        <img src="cd3a1ad3-61f8-4e0a-8fc0-83dd00625353.jpeg" alt="Fresh Vegetables">
+                        <h3>Fresh Vegetables</h3>
+                        <p>Get the freshest vegetables delivered to your doorstep.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Flux_Dev_Vibrant_and_lively_farmers_market_scene_with_an_abund_0.jpeg" alt="Organic Fruits">
+                        <h3>Organic Fruits</h3>
+                        <p>Enjoy a variety of healthy, organic fruits.</p>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="33b4102f-75f1-4b07-9694-9205f4ca133f.jpeg" alt="Healthy Grains">
+                        <h3>Healthy Grains</h3>
+                        <p>We provide various types of healthy grains.</p>
+                    </div>
+                     <div class="carousel-item">
+                        <img src="5288b9f0-b734-456f-a9ea-b07510eb9bc8.jpeg" alt="Dairy Products">
+                        <h3>Dairy Products</h3>
+                        <p>Get fresh and pure dairy products.</p>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-control prev" onclick="prevSlide()">❮</button>
+                    <button class="carousel-control next" onclick="nextSlide()">❯</button>
+                </div>
+            </section>
+            
+            <section class="service-section">
+                <h2>Our Services</h2>
+                <div class="service-grid">
+                    <div class="service-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Online Ordering</h3>
+                        <p>Order fresh produce from local farmers online.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-truck"></i>
+                        <h3>Delivery Service</h3>
+                        <p>Fast and reliable delivery to your doorstep.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Farmer Connections</h3>
+                        <p>Connect directly with local farmers.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-percent"></i>
+                        <h3>Discount Offers</h3>
+                        <p>Get exciting discount offers on various products.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="filter-section">
+                <h2>Filter Products</h2>
+                <input type="text" id="filterName" placeholder="Product Name">
+                <input type="number" id="filterPrice" placeholder="Max Price (₹)">
+                <select id="filterCategory">
+                    <option value="">All Categories</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="grains">Grains</option>
+                    <option value="dairy">Dairy</option>
+                </select>
+                <select id="filterProducer">
+                    <option value="">All Producers</option>
+                </select>
+                <button id="filterButton">Filter</button>
+            </section>
+
+            <section class="product-list">
+                <h2>Available Products</h2>
+                <div id="productContainer" class="products"></div>
+            </section>
+
+            <section class="wishlist-section">
+                <h2>Wishlist</h2>
+                <div id="wishlistContainer" class="products"></div>
+            </section>
+
+            <section class="cart-section">
+                <h2>Cart</h2>
+                <div id="cartContainer" class="products"></div>
+                <button id="orderButton">Order Now</button>
+            </section>
+            <div class="container" id="orderTrackingSection">
+                <h2>Order Tracking</h2>
+                
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-step active">✔</div>
+                    <div class="progress-step">2</div>
+                    <div class="progress-step">3</div>
+                    <div class="progress-step">4</div>
+                    <div class="progress-step">5</div>
+                </div>
+                
+                <div class="progress-labels">
+                    <span>Ordered</span>
+                    <span>Packed</span>
+                    <span>Shipped</span>
+                    <span>Out for Delivery</span>
+                    <span>Delivered</span>
+                </div>
+            
+                <p class="status">Order Placed</p>
+            </div>
+            <div id="chatbot">
+                <div id="chat-header">Chatbot</div>
+                <div id="chat-body"></div>
+                <input type="text" id="chat-input" placeholder="Type a message...">
+                <button id="send-btn">Send</button>
+            </div>
+            
+            <style>
+                #chatbot {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    height: 200px;
+                    width: 300px;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    display: flex;
+                    flex-direction: column;
+                }
+                #chat-header {
+                    background: #54b6eb;
+                    color: black;
+                    padding: 10px;
+                    text-align: center;
+                    cursor: pointer;
+                }
+                #chat-body {
+                    height: 300px;
+                    overflow-y: auto;
+                    padding: 10px;
+                }
+                #chat-input {
+                    width: 100%;
+                    padding: 10px;
+                    border: none;
+                    border-top: 1px solid #ccc;
+                }
+                #send-btn {
+                    width: 100%;
+                    padding: 10px;
+                    background: #54b6eb;
+                    color: black;
+                    border: none;
+                    cursor: pointer;
+                }
+            </style>
+            <section class="chat">
+                <h2>Chat with Consumers</h2>
+                <div id="chatBox"></div>
+                <input type="text" id="chatInput" placeholder="Type a message..." style="border-width: 0.5px;">
+                <button onclick="sendMessage()" style="border: none;background-color: #12c471;width: 70px;border-radius: 50px; padding: 8px;">Send</button>
+            </section>
+            <div id="feedbackPopup" class="popup">
+                <div class="popup-content">
+                    <h2>Provide Your Feedback</h2>
+                    <p>Your feedback helps us improve. Please rate your experience.</p>
+            
+                    <div class="rating-section">
+                        <p><strong>Product Quality:</strong></p>
+                        <div class="star-rating" id="productRating"></div>
+                    </div>
+            
+                    <div class="rating-section">
+                        <p><strong>Service Experience:</strong></p>
+                        <div class="star-rating" id="serviceRating"></div>
+                    </div>
+            
+                    <div class="rating-section">
+                        <p><strong>Farmer Communication:</strong></p>
+                        <div class="star-rating" id="farmerRating"></div>
+                    </div>
+            
+                    <textarea id="feedbackComment" placeholder="Additional Comments (Optional)"></textarea>
+            
+                    <button id="submitBtn " onclick="submitFeedback()">Submit Feedback</button>
+                </div>
+                <div id="feedbackPopup" class="popup">
+                    <div class="popup-content">
+                        <p>Thank you for your feedback!</p>
+                        <button id="closePopup">OK</button>
+                    </div>
+                </div>
+                <!-- Feedback Popup -->
+            
+            
+            </div>
+        </main>
+    
+    
+   
+    
+    <script>
+        // Sample order status (1 = Ordered, 2 = Packed, 3 = Shipped, etc.)
+        let currentStatus = 2; // Change this dynamically based on the order status
+    
+        function updateOrderTracking() {
+            const steps = document.querySelectorAll('.progress-step');
+            const statusText = document.querySelector('.status');
+    
+            const statusMessages = [
+                "Order Placed", 
+                "Order Packed", 
+                "Shipped", 
+                "Out for Delivery", 
+                "Delivered"
+            ];
+    
+            steps.forEach((step, index) => {
+                if (index <= currentStatus) {
+                    step.classList.add("active");
+                    step.innerHTML = "✔"; // Change to checkmark when completed
+                } else {
+                    step.classList.remove("active");
+                    step.innerHTML = index + 1; // Keep numbers for incomplete steps
+                }
+            });
+    
+            statusText.innerText = statusMessages[currentStatus];
+        }
+    
+        updateOrderTracking();
+    </script>
+        <footer style="background-color: #54b6eb; color: black; padding: 20px 10px; text-align: center; margin-top: 50px;">
+            <!-- Copyright -->
+            <div>
+                <p style="margin-top: 10px;flex: 1;">&copy; 2025 Farmer-Consumer. All Rights Reserved.</p>
+            </div>
+        </footer>
+        
+        <style>
+            footer div {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            footer a {
+                text-decoration: none;
+                font-size: 18px;
+            }
+            @media (max-width: 768px) {
+                footer div {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+                footer div > div {
+                    width: 100%;
+                }
+            }
+        </style>
+        
+        <!-- FontAwesome for Icons -->
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            if (index < 0) {
+                currentIndex = totalSlides - 1;
+            } else if (index >= totalSlides) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+
+            const newTransformValue = -currentIndex * 100 + '%';
+            document.getElementById('carouselInner').style.transform = translateX(`${newTransformValue}`);
+        }
+
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+
+        setInterval(nextSlide, 5000);
+        function toggleDropdown() {
+            let dropdown = document.getElementById("userDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+        function signOut() {
+    // Clear session or localStorage
+    localStorage.removeItem("farmerLoggedIn");
+
+    // Redirect to the login route that renders your EJS page
+    window.location.href = "/login"; // This should match your backend route
+}
+
+        // Function to Load Products from Local Storage
+        function loadProducts() {
+            return JSON.parse(localStorage.getItem("farmerProducts")) || [];
+        }
+
+        // Function to Load Wishlist from Local Storage
+        function loadWishlist() {
+            return JSON.parse(localStorage.getItem("wishlist")) || [];
+        }
+
+        // Function to Save Wishlist to Local Storage
+        function saveWishlist(wishlist) {
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        }
+
+        // Function to Load Cart from Local Storage
+        function loadCart() {
+            return JSON.parse(localStorage.getItem("cart")) || [];
+        }
+
+        // Function to Save Cart to Local Storage
+        function saveCart(cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+    
+
+        // Function to Display Products
+        function displayProducts(products) {
+    let productContainer = document.getElementById("productContainer");
+    productContainer.innerHTML = "";
+
+    if (products.length === 0) {
+        productContainer.innerHTML = "<p style='text-align: center;'>No products available.</p>";
+        return;
+    }
+
+    products.forEach((product, index) => {
+        let productElement = document.createElement("div");
+        productElement.classList.add("product-item");
+        productElement.innerHTML = `
+            <h3>${product.productName}</h3>
+            <p><strong>Category:</strong> ${product.category}</p>
+            <p><strong>Price:</strong> ₹${product.price}</p>
+            <p><strong>Stock Available:</strong> ${product.stock}</p>
+            <p><strong>Producer:</strong> ${product.producer}</p>
+            <p><strong>Days to Expire:</strong> ${product.daysToExpire}</p>
+            <p><strong>Expected Delivery Days:</strong> ${product.expectedDeliveryDays}</p>
+            <p><strong>Expiration Date:</strong> ${product.expirationDate}</p>
+            <button class="wishlist-button" data-index="${index}">Wishlist</button>
+            <button class="cart-button" data-index="${index}">Add to Cart</button>
+        `;
+        productContainer.appendChild(productElement);
+    });
+
+
+
+           
+
+            // Event Listeners for Wishlist and Cart Buttons
+            document.querySelectorAll(".wishlist-button").forEach(button => {
+                button.addEventListener("click", addToWishlist);
+            });
+            document.querySelectorAll(".cart-button").forEach(button => {
+                button.addEventListener("click", addToCart);
+            });
+        }
+
+        // Function to Display Wishlist
+        function displayWishlist(wishlist) {
+            let wishlistContainer = document.getElementById("wishlistContainer");
+            wishlistContainer.innerHTML = "";
+
+            if (wishlist.length === 0) {
+                wishlistContainer.innerHTML = "<p style='text-align: center;'>Wishlist is empty.</p>";
+                return;
+            }
+
+            wishlist.forEach((product, index) => {
+                let productElement = document.createElement("div");
+                productElement.classList.add("product-item");
+                productElement.innerHTML = `
+                    <p style="padding-top:35px;"><h3>${product.productName}</h3> - ₹${product.price} (${product.category}) - Producer: ${product.producer}</p>
+                    <button class="remove-wishlist" data-index="${index}">Remove</button>
+                `;
+                wishlistContainer.appendChild(productElement);
+            });
+
+            document.querySelectorAll(".remove-wishlist").forEach(button => {
+                button.addEventListener("click", removeFromWishlist);
+            });
+        }
+
+        // Function to Display Cart
+        function displayCart(cart) {
+            let cartContainer = document.getElementById("cartContainer");
+            cartContainer.innerHTML = "";
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = "<p style='text-align: center;'>Cart is empty.</p>";
+                return;
+            }
+
+            cart.forEach((product, index) => {
+                let productElement = document.createElement("div");
+                productElement.classList.add("product-item");
+                productElement.innerHTML = `
+                    <p style="padding-top:35px;"><h3>${product.productName}</h3> - ₹${product.price} (${product.category}) - Producer: ${product.producer}</p>
+                    <button class="remove-cart" data-index="${index}">Remove</button>
+                `;
+                cartContainer.appendChild(productElement);
+            });
+
+            document.querySelectorAll(".remove-cart").forEach(button => {
+                button.addEventListener("click", removeFromCart);
+            });
+        }
+
+        // Function to Filter Products
+        function filterProducts() {
+            let products = loadProducts();
+            let filterName = document.getElementById("filterName").value.toLowerCase();
+            let filterPrice = document.getElementById("filterPrice").value;
+            let filterCategory = document.getElementById("filterCategory").value;
+            let filterProducer = document.getElementById("filterProducer").value;
+
+            let filteredProducts = products.filter(product => {
+                return (
+                    (filterName === "" || product.productName.toLowerCase().includes(filterName)) &&
+                    (filterPrice === "" || product.price <= filterPrice) &&
+                    (filterCategory === "" || product.category === filterCategory) &&
+                    (filterProducer === "" || product.producer === filterProducer)
+                );
+            });
+
+            displayProducts(filteredProducts);
+        }
+
+        // Function to Add to Wishlist
+        function addToWishlist(event) {
+            let index = parseInt(event.target.dataset.index);
+            let products = loadProducts();
+            let product = products[index];
+            let wishlist = loadWishlist();
+
+            if (!wishlist.some(item => item.productName === product.productName)) {
+                wishlist.push(product);
+                saveWishlist(wishlist);
+                displayWishlist(wishlist);
+            }
+        }
+
+        // Function to Remove from Wishlist
+        function removeFromWishlist(event) {
+            let index = parseInt(event.target.dataset.index);
+            let wishlist = loadWishlist();
+            wishlist.splice(index, 1);
+            saveWishlist(wishlist);
+            displayWishlist(wishlist);
+        }
+
+        // Function to Add to Cart
+        function addToCart(event) {
+            let index = parseInt(event.target.dataset.index);
+            let products = loadProducts();
+            let product = products[index];
+            let cart = loadCart();
+
+            cart.push(product);
+            saveCart(cart);
+            displayCart(cart);
+        }
+
+        // Function to Remove from Cart
+        function removeFromCart(event) {
+            let index = parseInt(event.target.dataset.index);
+            let cart = loadCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            displayCart(cart);
+        }
+
+        // Populate Producer Filter
+        function populateProducerFilter() {
+            let products = loadProducts();
+            let producers = [...new Set(products.map(product => product.producer))];
+            let producerSelect = document.getElementById("filterProducer");
+
+            producers.forEach(producer => {
+                let option = document.createElement("option");
+                option.value = producer;
+                option.textContent = producer;
+                producerSelect.appendChild(option);
+            });
+        }
+
+        // Event Listener for Filter Button
+        document.getElementById("filterButton").addEventListener("click", filterProducts);
+
+        // Event Listener for Order Button
+        document.getElementById("orderButton").addEventListener("click", () => {
+            alert("Order placed successfully!");
+            localStorage.removeItem("cart");
+            displayCart([]);
+        });
+
+        // Load products on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            let products = loadProducts();
+            displayProducts(products);
+            populateProducerFilter();
+            displayWishlist(loadWishlist());
+            displayCart(loadCart());
+
+        });
+        function sendMessage() {
+            let chatBox = document.getElementById("chatBox");
+            let chatInput = document.getElementById("chatInput");
+            let message = chatInput.value.trim();
+            if (message !== "") {
+                let msgElement = document.createElement("p");
+                msgElement.textContent = "Consumer: " + message;
+                chatBox.appendChild(msgElement);
+                chatInput.value = "";
+            }
+        }
+        document.getElementById("orderButton").addEventListener("click", function () {
+    alert("Order placed successfully!");
+    localStorage.removeItem("cart");
+    displayCart([]);
+
+    setTimeout(showFeedbackPopup, 1000); // Show feedback popup after 1 sec
+});
+
+
+
+    function createStarRating(containerId) {
+        let container = document.getElementById(containerId);
+        container.innerHTML = ""; 
+        for (let i = 1; i <= 5; i++) {
+            let star = document.createElement("span");
+            star.innerHTML = "★";
+            star.classList.add("star");
+            star.dataset.value = i;
+            star.onclick = function() {
+                setRating(containerId, i);
+            };
+            container.appendChild(star);
+        }
+    }
+
+    function setRating(containerId, value) {
+        let stars = document.getElementById(containerId).querySelectorAll(".star");
+        stars.forEach((star, index) => {
+            star.classList.toggle("selected", index < value);
+        });
+        document.getElementById(containerId).setAttribute("data-rating", value);
+    }
+    function updateStars(container, selectedRating) {
+    let stars = container.getElementsByClassName("star");
+
+    for (let i = 0; i < stars.length; i++) {
+        if (i < selectedRating) {
+            stars[i].classList.add("selected");
+        } else {
+            stars[i].classList.remove("selected");
+        }
+    }
+}
+
+    function submitFeedback() {
+        let productRating = document.getElementById("productRating").getAttribute("data-rating");
+        let serviceRating = document.getElementById("serviceRating").getAttribute("data-rating");
+        let farmerRating = document.getElementById("farmerRating").getAttribute("data-rating");
+        let feedbackComment = document.getElementById("feedbackComment").value.trim();
+
+        if (!productRating || !serviceRating || !farmerRating) {
+            alert("Please provide a rating for all categories.");
+            return;
+        }
+
+        let feedbackData = {
+            productRating: productRating,
+            serviceRating: serviceRating,
+            farmerRating: farmerRating,
+            additionalComments: feedbackComment
+        };
+
+        console.log("Feedback Submitted:", feedbackData);
+        alert("Thank you for your feedback!");
+        document.getElementById("feedbackPopup").style.display = "none";}
+
+
+       
+    // Initialize star ratings
+    createStarRating("productRating");
+    createStarRating("serviceRating");
+    createStarRating("farmerRating");
+
+    function showFeedbackPopup() {
+    let feedbackPopup = document.getElementById("feedbackPopup");
+    feedbackPopup.style.display = "flex"; // Show the feedback popup
+    createStarRating("productRating"); 
+    createStarRating("serviceRating");
+    createStarRating("farmerRating");
+}
+
+document.getElementById("chat-header").addEventListener("click", function () {
+    let chatbot = document.getElementById("chatbot");
+    chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
+});
+
+
+document.getElementById("send-btn").addEventListener("click", async function () {
+    let input = document.getElementById("chat-input");
+    let message = input.value.trim();
+    if (!message) return;
+
+    appendMessage("You: " + message, "user");
+
+    // Send message to backend
+    const response = await fetch("http://localhost:5500/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+    });
+
+    const data = await response.json();
+    appendMessage("Bot: " + data.reply, "bot");
+    input.value = "";
+});
+
+function appendMessage(text, sender) {
+    let chatBody = document.getElementById("chat-body");
+    let msg = document.createElement("div");
+    msg.textContent = text;
+    msg.style.padding = "8px";
+    msg.style.margin = "5px 0";
+    msg.style.borderRadius = "5px";
+    msg.style.background = sender === "user" ? "#d1ffd1" : "#f1f1f1";
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+    </script>
+</body>
+</html>

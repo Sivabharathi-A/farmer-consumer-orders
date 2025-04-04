@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        function toggleFarmerId() {
+            var userType = document.getElementById("userType").value;
+            var farmerIdField = document.getElementById("farmerIdField");
+
+            // Show Farmer ID field only if Farmer is selected
+            farmerIdField.style.display = (userType === "Farmer") ? "block" : "none";
+        }
+    </script>
+</head>
+<body style="
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://png.pngtree.com/background/20230425/original/pngtree-produce-at-a-local-farmers-market-picture-image_2476446.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    perspective: 1000px;
+">
+
+
+    <div class="form-container" style="
+    background: rgba(255, 255, 255, 0.1);         /* semi-transparent */
+    backdrop-filter: blur(10px);                 /* blur effect */
+    -webkit-backdrop-filter: blur(10px);         /* Safari support */
+    border: 2px solid black;                     /* black border */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);   /* optional shadow */
+    width: 400px;
+    text-align: center;
+    ">
+
+        <h2 style="color: white; margin-bottom: 20px;">Signup</h2>
+        <form action="/signup" method="post">
+            <!-- Name Field -->
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="name" style="color: white; font-weight: 500;">Name:</label>
+                <input type="text" id="name" name="username" placeholder="Enter your name" required autocomplete="off" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin-top: 5px;
+                ">
+            </div>
+            
+            <!-- Email Field -->
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="email" style="color: white; font-weight: 500;">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin-top: 5px;
+                ">
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="password" style="color: white; font-weight: 500;">Password:</label>
+                <input type="password" name="password" id="password" placeholder="Password" required style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin-top: 5px;
+                ">
+            </div>
+
+            <!-- Location Field -->
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="location" style="color: white; font-weight: 500;">Location:</label>
+                <input type="text" id="location" name="location" placeholder="Enter your location" required style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin-top: 5px;
+                ">
+            </div>
+
+            <!-- User Type Selection -->
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="userType" style="color: white; font-weight: 500;">User Type:</label>
+                <select name="userType" id="userType" required onchange="toggleFarmerId()" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin-top: 5px;
+                ">
+                    <option value="Consumer">Consumer</option>
+                    <option value="Farmer">Farmer</option>
+                </select>
+            </div>
+
+            <!-- Farmer ID (only shown if Farmer is selected) -->
+            <div class="form-group" id="farmerIdField" style="margin-bottom: 15px; text-align: left; display: none;">
+                <label for="farmerId" style="color: white; font-weight: 500;">Farmer ID:</label>
+                <input type="text" id="farmerId" name="farmerId" placeholder="Enter your Farmer ID" style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin-top: 5px;
+                ">
+            </div>
+
+            <!-- Signup Button -->
+            <button type="button" onclick="showTerms()" class="submit-btn" style="
+        width: 100%;
+        padding: 12px;
+        background: #ff9f43;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    ">Signup</button>
+        </form>
+
+        <p style="margin-top: 15px; color: white; font-size: 14px;">
+            Already have an account? <a href="/" style="
+                color: yellow;
+                font-weight: bold;
+                text-decoration: none;
+            ">Login here</a>
+        </p>
+    </div>
+    <div class="terms-popup" id="termsPopup">
+        <h2>Terms and Conditions</h2>
+        <p id="termsContent"></p>
+        <label>
+            <input type="checkbox" id="termsCheckbox"> I agree to the terms and conditions.
+        </label><br>
+        <button onclick="confirmTerms()">Confirm</button>
+    </div>
+    <script>
+        function showTerms() {
+    const userType = document.getElementById("userType").value; // Get selected user type
+    const termsPopup = document.getElementById("termsPopup");
+    const termsContent = document.getElementById("termsContent");
+    
+    termsPopup.style.display = "block"; // Show the popup
+
+    if (userType === "Farmer") {
+        termsContent.textContent = "Sellers must adhere to ethical selling practices by providing accurate product descriptions, ensuring quality and safety, setting fair prices, using honest weights and measures, fulfilling orders promptly, maintaining respectful customer communication, verifying product origin, and complying with all applicable laws and regulations. Sellers are encouraged to adopt environmentally responsible practices. Failure to comply may result in warnings, account suspension, or termination of selling privileges, and sellers are responsible for any legal issues arising from their sales. By agreeing to these terms, sellers commit to providing high-quality products to consumers.";
+        termsPopup.dataset.userType = "farmer";
+    } else {
+        termsContent.textContent = "Consumers are expected to use our platform ethically and responsibly. This includes providing accurate and truthful information, adhering to stated policies, and communicating respectfully with all parties. Our platform's role is to facilitate connections and provide services; we are committed to ensuring a seamless experience and upholding the integrity of the platform. Consumers are responsible for their interactions and transactions. By using our services, consumers agree to these terms and acknowledge our role as a service provider.";
+        termsPopup.dataset.userType = "consumer";
+    }
+}
+
+
+function confirmTerms() {
+    const termsCheckbox = document.getElementById("termsCheckbox");
+    if (termsCheckbox.checked) {
+        const termsPopup = document.getElementById("termsPopup");
+        termsPopup.style.display = "none"; // Hide popup
+        document.querySelector("form").submit(); // Submit the form
+    } else {
+        alert("Please agree to the terms and conditions to proceed.");
+    }
+}
+
+    </script>
+    <style>
+        .terms-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 80%;
+    max-width: 500px;
+}
+
+.terms-popup h2 {
+    margin-bottom: 10px;
+}
+
+.terms-popup p {
+    margin-bottom: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    color: #000;
+}
+
+.terms-popup button {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+    </style>
+
+</body>
+</html>
