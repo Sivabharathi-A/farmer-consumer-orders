@@ -1,0 +1,147 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+}
+
+h1 {
+    margin: 0;
+}
+
+/* User Info */
+.user-info {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+/* Dropdown */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 200px;
+}
+
+.dropdown p {
+    margin: 5px 0;
+    color: #333;
+}
+
+.dropdown button {
+    width: 100%;
+    padding: 8px;
+    background: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.dropdown button:hover {
+    background: #d32f2f;
+}
+
+/* Form Section */
+.add-product {
+    background: white;
+    padding: 20px;
+    margin: 5% 10%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-product h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.add-product input,
+.add-product select,
+.add-product button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-product button {
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    width: 200px;
+    display: block; /* Make the button a block element */
+    margin: 0 auto; /* Center horizontally */
+}
+
+.add-product button:hover {
+    background: #388E3C;
+}
+
+/* Product List */
+.product-list {
+    margin: 20px;
+}
+
+.products {
+    display: block;
+    text-align: center;
+    gap: 20px;
+}
+
+.product-card {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: center;
+}
+
+.product-card h3 {
+    margin: 10px 0;
+    color: #333;
+}
+
+.product-card p {
+    color: #555;
+}
+
+.product-card button {
+    width: 100%;
+    padding: 8px;
+    background: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.product-card button:hover {
+    background: #d32f2f;
+}
