@@ -698,6 +698,8 @@ h1 {
                 <select id="filterProducer">
                     <option value="">All Producers</option>
                 </select>
+                <input type="number" id="filterMinStock" placeholder="Min Stock">
+                <input type="number" id="filterMaxStock" placeholder="Max Stock">
                 <button id="filterButton">Filter</button>
             </section>
 
@@ -868,9 +870,136 @@ h1 {
                     </div>
                 </div>
                 <!-- Feedback Popup -->
-            
-            
             </div>
+            <style>
+                .cart-section {
+                  border: 1px solid #ccc;
+                  padding: 20px;
+                  margin-bottom: 20px;
+                  border-radius: 5px;
+                }
+              
+                .products {
+                  margin-bottom: 15px;
+                }
+              
+                #orderButton {
+                  padding: 10px 20px;
+                  background-color: #007bff;
+                  color: white;
+                  border: none;
+                  border-radius: 5px;
+                  cursor: pointer;
+                }
+              
+                #orderButton:hover {
+                  background-color: #0056b3;
+                }
+              
+                /* Popup Styles */
+                .popup-overlay {
+                  display: none; /* Hidden by default */
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 1000; /* Ensure it's on top */
+                }
+              
+                .popup-content {
+                  background-color: white;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                  text-align: center;
+                  width: 300px; /* Adjust width as needed */
+                }
+              
+                .popup-content h3 {
+                  margin-top: 0;
+                  margin-bottom: 15px;
+                  color: #333;
+                }
+              
+                .popup-buttons button {
+                  padding: 10px 15px;
+                  margin: 0 10px;
+                  border: none;
+                  border-radius: 5px;
+                  cursor: pointer;
+                  font-weight: bold;
+                }
+              
+                .popup-buttons button#pickupBtn {
+                  background-color: #28a745;
+                  color: white;
+                }
+              
+                .popup-buttons button#deliveryBtn {
+                  background-color: #007bff;
+                  color: white;
+                }
+              
+                .popup-buttons button:hover {
+                  opacity: 0.9;
+                }
+              
+                .close-button {
+                  position: absolute;
+                  top: 10px;
+                  right: 10px;
+                  background: none;
+                  border: none;
+                  font-size: 1.2em;
+                  cursor: pointer;
+                  color: #777;
+                }
+              
+                .close-button:hover {
+                  color: #333;
+                }
+              </style>
+              
+              
+              <div id="orderOptionsPopup" class="popup-overlay">
+                <div class="popup-content">
+                  <button class="close-button" onclick="closePopup()">&times;</button>
+                  <h3>Choose Your Order Type</h3>
+                  <div class="popup-buttons">
+                    <button id="pickupBtn" onclick="handlePickup()">Pickup</button>
+                    <button id="deliveryBtn" onclick="handleDelivery()">Delivery</button>
+                  </div>
+                </div>
+              </div>
+              
+              <script>
+                const orderButton = document.getElementById('orderButton');
+                const orderOptionsPopup = document.getElementById('orderOptionsPopup');
+              
+                orderButton.addEventListener('click', () => {
+                  orderOptionsPopup.style.display = 'flex'; // Show the popup
+                });
+              
+                function closePopup() {
+                  orderOptionsPopup.style.display = 'none'; // Hide the popup
+                }
+              
+                function handlePickup() {
+                  alert('You have selected Pickup. Further instructions will be provided.');
+                  closePopup();
+                  // You can redirect to a pickup information page or perform other actions here
+                }
+              
+                function handleDelivery() {
+                  alert('You have selected Delivery. Please ensure your address is up to date.');
+                  closePopup();
+                  // You can redirect to a delivery address page or perform other actions here
+                }
+              </script>
         </main>
     
     
@@ -1097,24 +1226,31 @@ h1 {
         }
 
         // Function to Filter Products
-        function filterProducts() {
-            let products = loadProducts();
-            let filterName = document.getElementById("filterName").value.toLowerCase();
-            let filterPrice = document.getElementById("filterPrice").value;
-            let filterCategory = document.getElementById("filterCategory").value;
-            let filterProducer = document.getElementById("filterProducer").value;
+function filterProducts() {
+    let products = loadProducts();
 
-            let filteredProducts = products.filter(product => {
-                return (
-                    (filterName === "" || product.productName.toLowerCase().includes(filterName)) &&
-                    (filterPrice === "" || product.price <= filterPrice) &&
-                    (filterCategory === "" || product.category === filterCategory) &&
-                    (filterProducer === "" || product.producer === filterProducer)
-                );
-            });
+    let filterName = document.getElementById("filterName").value.toLowerCase();
+    let filterPrice = document.getElementById("filterPrice").value;
+    let filterCategory = document.getElementById("filterCategory").value;
+    let filterProducer = document.getElementById("filterProducer").value;
+    let filterMinStock = document.getElementById("filterMinStock").value;
+    let filterMaxStock = document.getElementById("filterMaxStock").value;
 
-            displayProducts(filteredProducts);
-        }
+    let filteredProducts = products.filter(product => {
+        return (
+            (filterName === "" || product.productName.toLowerCase().includes(filterName)) &&
+            (filterPrice === "" || product.price <= parseFloat(filterPrice)) &&
+            (filterCategory === "" || product.category === filterCategory) &&
+            (filterProducer === "" || product.producer === filterProducer) &&
+            (filterMinStock === "" || product.stock >= parseInt(filterMinStock)) &&
+            (filterMaxStock === "" || product.stock <= parseInt(filterMaxStock))
+        );
+    });
+
+    // Display the filtered products (you can adjust this as needed)
+    displayProducts(filteredProducts);
+}
+
 
         // Function to Add to Wishlist
         function addToWishlist(event) {
