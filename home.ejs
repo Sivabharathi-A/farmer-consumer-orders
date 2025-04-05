@@ -73,7 +73,298 @@
                     </div>
                 </div>
             </section>
-            <section class="add-product">
+            <style>
+                .product-list h2 {
+                  text-align: center;
+                }
+              
+                .orders,
+                .products,
+                .chat {
+                  background: white;
+                  padding: 30px;
+                  margin: 20px;
+                  border-radius: 5px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  text-align: center;
+                }
+              
+                /* Product List Styling */
+                .products-grid {
+                  gap: 15px;
+                  padding: 15px;
+                  display: block;
+                  text-align: center;
+                }
+              
+                .product-card {
+                  width: 250px;
+                  height: auto; /* Adjusted height */
+                  margin: 10px 10px;
+                  background-color: white;
+                  border: 1px solid #ccc;
+                  padding: 15px; /* Added padding inside the card */
+                  border-radius: 8px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                  display: inline-block;
+                  text-align: center;
+                  transition: transform 0.2s ease;
+                }
+              
+                .product-card h3 {
+                  margin: 10px 0;
+                  color: #333;
+                }
+              
+                .product-card p {
+                  font-size: 14px;
+                  color: #666;
+                  margin-bottom: 5px; /* Added some spacing between paragraphs */
+                }
+              
+                .product-card button {
+                  padding: 8px 15px;
+                  background-color: #dc3545;
+                  color: white;
+                  border: none;
+                  border-radius: 5px;
+                  cursor: pointer;
+                  font-size: 14px;
+                  margin-top: 10px;
+                }
+              
+                .product-card button:hover {
+                  background-color: #c82333;
+                }
+              
+                /* Warning Popup Styles */
+                .warning-popup-overlay {
+                  display: none;
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(0, 0, 0, 0.5);
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 1001;
+                }
+              
+                .warning-popup-content {
+                  background-color: white;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                  text-align: center;
+                  width: 400px;
+                }
+              
+                .warning-popup-content h3 {
+                  margin-top: 0;
+                  margin-bottom: 15px;
+                  color: #dc3545;
+                }
+              
+                .warning-popup-content p {
+                  margin-bottom: 20px;
+                }
+              
+                .warning-popup-buttons button {
+                  padding: 10px 20px;
+                  border: none;
+                  border-radius: 5px;
+                  cursor: pointer;
+                  font-weight: bold;
+                  background-color: #007bff;
+                  color: white;
+                  margin: 0 10px;
+                }
+              
+                .warning-popup-buttons button:hover {
+                  background-color: #0056b3;
+                }
+              </style>
+              
+              <section class="add-product">
+                <h2>Add Product</h2>
+                <form id="addProductForm">
+                  <label for="productName">Product Name:</label>
+                  <input type="text" id="productName" name="productName" required>
+              
+                  <label for="productCategory">Category:</label>
+                  <select id="productCategory" name="productCategory" required>
+                    <option value="">Select Category</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruits">Fruits</option>
+                    <option value="Grains">Grains</option>
+                    <option value="Dairy">Dairy</option>
+                  </select>
+              
+                  <label for="stock">Stock (kg):</label>
+                  <input type="number" id="stock" name="stock" required>
+              
+                  <label for="price">Price (₹):</label>
+                  <input type="number" id="price" name="price" required>
+              
+                  <label for="daysToExpire">Days Until Expiration:</label>
+                  <input type="number" id="daysToExpire" name="daysToExpire" required>
+              
+                  <label for="expectedDeliveryDays">Expected Delivery Days:</label>
+                  <input type="number" id="expectedDeliveryDays" name="expectedDeliveryDays" required>
+              
+                  <label for="expirationDate">Expiration Date:</label>
+                  <input type="text" id="expirationDate" name="expirationDate" readonly>
+              
+                  <button type="submit">Add Product</button>
+                </form>
+              </section>
+              
+              <div id="stockExpirationWarning" class="warning-popup-overlay">
+                <div class="warning-popup-content">
+                  <h3>Inventory Alert!</h3>
+                  <p>You have more than 5kg of stock available and the expiration date is nearing (less than 3 days).</p>
+                  <p>We recommend considering an offer to move the stock quickly.</p>
+                  <div class="warning-popup-buttons">
+                    <button id="okButtonWarning">OK</button>
+                  </div>
+                </div>
+              </div>
+              
+              <section class="product-list">
+                <h2>My Products</h2>
+                <div id="farmerProducts" class="products-grid"></div>
+              </section>
+              
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  updateExpirationDates();
+                  displayProducts();
+                });
+              
+                function updateExpirationDates() {
+                  let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+                  let today = new Date();
+              
+                  products.forEach(product => {
+                    let expiration = new Date(product.expirationDate);
+                    let diffDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
+                    product.daysToExpire = diffDays > 0 ? diffDays : 0;
+                  });
+              
+                  localStorage.setItem("farmerProducts", JSON.stringify(products));
+                  displayProducts();
+                }
+              
+                document.getElementById("daysToExpire").addEventListener("input", function() {
+                  const daysToExpire = parseInt(this.value);
+                  if (!isNaN(daysToExpire)) {
+                    const expirationDate = new Date();
+                    expirationDate.setDate(expirationDate.getDate() + daysToExpire);
+                    document.getElementById("expirationDate").value = expirationDate.toISOString().split('T')[0];
+                  } else {
+                    document.getElementById("expirationDate").value = '';
+                  }
+                });
+              
+                document.getElementById("addProductForm").addEventListener("submit", function(event) {
+                  event.preventDefault();
+              
+                  const productName = document.getElementById("productName").value;
+                  const category = document.getElementById("productCategory").value;
+                  const stock = parseFloat(document.getElementById("stock").value);
+                  const price = parseFloat(document.getElementById("price").value); // Get the price
+                  const daysToExpire = parseInt(document.getElementById("daysToExpire").value);
+                  const expectedDeliveryDays = parseInt(document.getElementById("expectedDeliveryDays").value);
+                  const expirationDate = document.getElementById("expirationDate").value;
+              
+                  if (stock > 5 && daysToExpire < 3) {
+                    document.getElementById("stockExpirationWarning").style.display = 'flex';
+                    // Do not add the product to local storage here, wait for the OK button
+                    // You might want to store the product data temporarily if needed
+                    sessionStorage.setItem('pendingProduct', JSON.stringify({
+                      productName,
+                      category,
+                      stock,
+                      price,
+                      daysToExpire,
+                      expectedDeliveryDays,
+                      expirationDate
+                    }));
+                  } else {
+                    const newProduct = {
+                      productName,
+                      category,
+                      stock,
+                      price,
+                      daysToExpire,
+                      expectedDeliveryDays,
+                      expirationDate
+                    };
+              
+                    const products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+                    products.push(newProduct);
+                    localStorage.setItem("farmerProducts", JSON.stringify(products));
+              
+                    updateExpirationDates();
+                    displayProducts(); // Immediately display the new product
+                    document.getElementById("addProductForm").reset();
+                  }
+                });
+              
+                document.getElementById("okButtonWarning").addEventListener("click", function() {
+                  document.getElementById("stockExpirationWarning").style.display = 'none';
+                  // Retrieve the pending product data
+                  const pendingProductData = sessionStorage.getItem('pendingProduct');
+                  if (pendingProductData) {
+                    const newProduct = JSON.parse(pendingProductData);
+                    const products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+                    products.push(newProduct);
+                    localStorage.setItem("farmerProducts", JSON.stringify(products));
+                    sessionStorage.removeItem('pendingProduct'); // Clear the temporary storage
+                    updateExpirationDates();
+                    displayProducts(); // Display the product after the user acknowledges the warning
+                    document.getElementById("addProductForm").reset();
+                  }
+                });
+              
+                setInterval(updateExpirationDates, 86400000);
+              
+                function displayProducts() {
+                  let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+                  let productContainer = document.getElementById("farmerProducts");
+                  productContainer.innerHTML = "";
+              
+                  if (products.length === 0) {
+                    productContainer.innerHTML = "<p>No products added yet.</p>";
+                    return;
+                  }
+              
+                  products.forEach((product, index) => {
+                    let productElement = document.createElement("div");
+                    productElement.classList.add("product-card");
+                    productElement.innerHTML = `
+                      <h3>${product.productName}</h3>
+                      <p>Price: ₹${product.price}</p>
+                      <p>Category: ${product.category}</p>
+                      <p>Stock: ${product.stock} kg</p>
+                      <p>Expires In: ${product.daysToExpire} days</p>
+                      <p>Expiration Date: ${product.expirationDate}</p>
+                      <button onclick="deleteProduct(${index})">Delete</button>
+                    `;
+                    productContainer.appendChild(productElement);
+                  });
+                }
+              
+                function deleteProduct(index) {
+                  let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+                  products.splice(index, 1);
+                  localStorage.setItem("farmerProducts", JSON.stringify(products));
+                  displayProducts();
+                  updateExpirationDates(); // Update displayed expiration dates after deletion
+                }
+              </script>
+            <!-- <section class="add-product">
                 <h2>Add Product</h2>
                 <form id="addProductForm">
                     <label for="productName">Product Name:</label>
@@ -104,12 +395,12 @@
                 
                     <button type="submit">Add Product</button>
                   </form>
-            </section>
+            </section> -->
 
-            <section class="product-list">
+            <!-- <section class="product-list">
                 <h2>My Products</h2>
                 <div id="farmerProducts" class="products-grid"></div>
-            </section>
+            </section> -->
             <section class="orders incoming-orders product-list">
                 <h2>Incoming Orders</h2>
                 <div id="orderList" class="products-grid">
@@ -118,6 +409,8 @@
                         <h3>Order #1</h3>
                         <div class="order-details">
                             <p><strong>Customer Name:</strong> Priya Sharma</p>
+                            <p><strong>Phone No:</strong> 9743698622</p>
+                            <p><strong>Order Type:</strong> Delivery</p>
                             <p><strong>Products:</strong>
                                 <ul>
                                     <li>Vegetable: Carrot (2 kg)</li>
@@ -135,6 +428,8 @@
                         <h3>Order #2</h3>
                         <div class="order-details">
                             <p><strong>Customer Name:</strong> Rohan Verma</p>
+                            <p><strong>Phone No:</strong> 9743612345</p>
+                            <p><strong>Order Type:</strong> PickUp</p>
                             <p><strong>Products:</strong>
                                 <ul>
                                     <li>Vegetable: Tomato (1.5 kg)</li>
@@ -152,6 +447,8 @@
                         <h3>Order #3</h3>
                         <div class="order-details">
                             <p><strong>Customer Name:</strong> Sneha Patel</p>
+                            <p><strong>Phone No:</strong> 9876598622</p>
+                            <p><strong>Order Type:</strong> Delivery</p>
                             <p><strong>Products:</strong>
                                 <ul>
                                     <li>Grain: Rice (5 kg)</li>
@@ -169,6 +466,8 @@
                         <h3>Order #4</h3>
                         <div class="order-details">
                             <p><strong>Customer Name:</strong> Karthik Nair</p>
+                            <p><strong>Phone No:</strong> 9743654321</p>
+                            <p><strong>Order Type:</strong> Delivery</p>
                             <p><strong>Products:</strong>
                                 <ul>
                                     <li>Vegetable: Beetroot (1 kg)</li>
@@ -364,96 +663,103 @@
     window.location.href = "/login"; // This should match your backend route
 }
 
-        // Product Handling - Add Product
-        document.addEventListener("DOMContentLoaded", function () {
-      updateExpirationDates();
-      displayProducts();
-    });
+    //     // Product Handling - Add Product
+    //     document.addEventListener("DOMContentLoaded", function () {
+    //   updateExpirationDates();
+    //   displayProducts();
+    // });
 
-    function updateExpirationDates() {
-      let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
-      let today = new Date();
+    // function updateExpirationDates() {
+    //   let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+    //   let today = new Date();
 
-      products.forEach(product => {
-        let expiration = new Date(product.expirationDate);
-        let diffDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
-        product.daysToExpire = diffDays > 0 ? diffDays : 0;
-      });
+    //   products.forEach(product => {
+    //     let expiration = new Date(product.expirationDate);
+    //     let diffDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
+    //     product.daysToExpire = diffDays > 0 ? diffDays : 0;
+    //   });
 
-      localStorage.setItem("farmerProducts", JSON.stringify(products));
-      displayProducts();
-    }
+    //   localStorage.setItem("farmerProducts", JSON.stringify(products));
+    //   displayProducts();
+    // }
 
-    document.getElementById("daysToExpire").addEventListener("input", function () {
-      const daysToExpire = parseInt(this.value);
-      if (!isNaN(daysToExpire)) {
-        const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() + daysToExpire);
-        document.getElementById("expirationDate").value = expirationDate.toISOString().split('T')[0];
-      }
-    });
+    // document.getElementById("daysToExpire").addEventListener("input", function () {
+    //   const daysToExpire = parseInt(this.value);
+    //   if (!isNaN(daysToExpire)) {
+    //     const expirationDate = new Date();
+    //     expirationDate.setDate(expirationDate.getDate() + daysToExpire);
+    //     document.getElementById("expirationDate").value = expirationDate.toISOString().split('T')[0];
+    //   }
+    // });
 
-    document.getElementById("addProductForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+    // document.getElementById("addProductForm").addEventListener("submit", function (event) {
+    //   event.preventDefault();
 
-      const productName = document.getElementById("productName").value;
-      const category = document.getElementById("productCategory").value;
-      const stock = parseFloat(document.getElementById("stock").value);
-      const price = parseInt(document.getElementById("price").value);
-      const daysToExpire = parseInt(document.getElementById("daysToExpire").value);
-      const expectedDeliveryDays = parseInt(document.getElementById("expectedDeliveryDays").value);
-      const expirationDate = document.getElementById("expirationDate").value;
+    //   const productName = document.getElementById("productName").value;
+    //   const category = document.getElementById("productCategory").value;
+    //   const stock = parseFloat(document.getElementById("stock").value);
+    //   const price = parseInt(document.getElementById("price").value);
+    //   const daysToExpire = parseInt(document.getElementById("daysToExpire").value);
+    //   const expectedDeliveryDays = parseInt(document.getElementById("expectedDeliveryDays").value);
+    //   const expirationDate = document.getElementById("expirationDate").value;
 
-      const newProduct = {
-        productName,
-        category,
-        stock,
-        price,
-        daysToExpire,
-        expectedDeliveryDays,
-        expirationDate
-      };
+    //   const newProduct = {
+    //     productName,
+    //     category,
+    //     stock,
+    //     price,
+    //     daysToExpire,
+    //     expectedDeliveryDays,
+    //     expirationDate
+    //   };
+      
 
-      const products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
-      products.push(newProduct);
-      localStorage.setItem("farmerProducts", JSON.stringify(products));
+    //   const products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+    //   products.push(newProduct);
+    //   localStorage.setItem("farmerProducts", JSON.stringify(products));
 
-      updateExpirationDates();
-      document.getElementById("addProductForm").reset();
-    });
+    //   updateExpirationDates();
+    //                 displayProducts(); // Immediately display the new product
+    //                 document.getElementById("addProductForm").reset();
+                  
 
-    setInterval(updateExpirationDates, 86400000);
-        function displayProducts() {
-            let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
-            let productContainer = document.getElementById("farmerProducts");
-            productContainer.innerHTML = "";
+    // });
 
-            if (products.length === 0) {
-                productContainer.innerHTML = "<p>No products added yet.</p>";
-                return;
-            }
+    // setInterval(updateExpirationDates, 86400000);
+    //     function displayProducts() {
+    //         let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+    //         let productContainer = document.getElementById("farmerProducts");
+    //         productContainer.innerHTML = "";
 
-            products.forEach((product, index) => {
-                let productElement = document.createElement("div");
-                productElement.classList.add("product-card");
-                productElement.innerHTML = `
-                    <h3>${product.productName}</h3>
-                    <p>Price: ₹${product.price}</p>
-                    <p>Category: ${product.category}</p>
-                    <p>Stock: ${product.stock}</p> 
-                    <button onclick="deleteProduct(${index})">Delete</button>
-                `;
-                productContainer.appendChild(productElement);
-            });
-        }
+    //         if (products.length === 0) {
+    //             productContainer.innerHTML = "<p>No products added yet.</p>";
+    //             return;
+    //         }
 
-        // Function to Delete a Product
-        function deleteProduct(index) {
-            let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
-            products.splice(index, 1);
-            localStorage.setItem("farmerProducts", JSON.stringify(products));
-            displayProducts();
-        }
+    //         products.forEach((product, index) => {
+    //             let productElement = document.createElement("div");
+    //             productElement.classList.add("product-card");
+    //             productElement.innerHTML = `
+    //                   <h3>${product.productName}</h3>
+    //                   <p>Price: ₹${product.price}</p>
+    //                   <p>Category: ${product.category}</p>
+    //                   <p>Stock: ${product.stock} kg</p>
+    //                   <p>Expires In: ${product.daysToExpire} days</p>
+    //                   <p>Expiration Date: ${product.expirationDate}</p>
+    //                   <button onclick="deleteProduct(${index})">Delete</button>
+    //                 `;
+    //                 productContainer.appendChild(productElement);
+    //               });
+
+    //     }
+
+    //     // Function to Delete a Product
+    //     function deleteProduct(index) {
+    //         let products = JSON.parse(localStorage.getItem("farmerProducts")) || [];
+    //         products.splice(index, 1);
+    //         localStorage.setItem("farmerProducts", JSON.stringify(products));
+    //         displayProducts();
+    //    }
 
         // Load products on page load
         document.addEventListener("DOMContentLoaded", displayProducts);
@@ -485,65 +791,65 @@
         //         orderList.appendChild(orderElement);
         //     });
         //}
-        function completeOrder(orderId) {
-            let orders = JSON.parse(localStorage.getItem("orders")) || [];
-            let orderIndex = orders.findIndex(order => order.orderId === orderId);
+        // function completeOrder(orderId) {
+        //     let orders = JSON.parse(localStorage.getItem("orders")) || [];
+        //     let orderIndex = orders.findIndex(order => order.orderId === orderId);
 
-            if (orderIndex !== -1) {
-                orders[orderIndex].status = "Completed"; // Update order status
-                localStorage.setItem("orders", JSON.stringify(orders));
+        //     if (orderIndex !== -1) {
+        //         orders[orderIndex].status = "Completed"; // Update order status
+        //         localStorage.setItem("orders", JSON.stringify(orders));
 
-                // Move order to completed orders section (optional, you can just update status)
-                let completedOrder = orders.splice(orderIndex, 1)[0]; //remove from incoming
-                let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
-                completedOrders.push(completedOrder);
-                localStorage.setItem("completedOrders", JSON.stringify(completedOrders));
+        //         // Move order to completed orders section (optional, you can just update status)
+        //         let completedOrder = orders.splice(orderIndex, 1)[0]; //remove from incoming
+        //         let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
+        //         completedOrders.push(completedOrder);
+        //         localStorage.setItem("completedOrders", JSON.stringify(completedOrders));
 
-                localStorage.setItem("orders", JSON.stringify(orders)); // Save changes
+        //         localStorage.setItem("orders", JSON.stringify(orders)); // Save changes
 
-                displayIncomingOrders(); // Refresh incoming orders list
-                displayCompletedOrders();
-                // Update the status text directly
-                let statusSpan = document.getElementById(`orderStatus${orderId}`);
-                if (statusSpan) {
-                    statusSpan.textContent = "Completed";
-                }
+        //         displayIncomingOrders(); // Refresh incoming orders list
+        //         displayCompletedOrders();
+        //         // Update the status text directly
+        //         let statusSpan = document.getElementById(`orderStatus${orderId}`);
+        //         if (statusSpan) {
+        //             statusSpan.textContent = "Completed";
+        //         }
 
-            }
-        }
-        function displayCompletedOrders() {
-            let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
-            let completedOrdersContainer = document.getElementById("completedOrders");
-            completedOrdersContainer.innerHTML = "";
+        //     }
+        // }
+        // function displayCompletedOrders() {
+        //     let completedOrders = JSON.parse(localStorage.getItem("completedOrders")) || [];
+        //     let completedOrdersContainer = document.getElementById("completedOrders");
+        //     completedOrdersContainer.innerHTML = "";
 
-            // Filter completed orders for the logged-in farmer
-            let farmerCompletedOrders = completedOrders.filter(order => order.farmerName === "John Doe");
+        //     // Filter completed orders for the logged-in farmer
+        //     let farmerCompletedOrders = completedOrders.filter(order => order.farmerName === "John Doe");
 
-            if (farmerCompletedOrders.length === 0) {
-                completedOrdersContainer.innerHTML = "<p>No completed orders.</p>";
-                return;
-            }
+        //     if (farmerCompletedOrders.length === 0) {
+        //         completedOrdersContainer.innerHTML = "<p>No completed orders.</p>";
+        //         return;
+        //     }
 
-            farmerCompletedOrders.forEach(order => {
-                let orderElement = document.createElement("div");
-                orderElement.classList.add("order");
-                orderElement.innerHTML = `
-                    <p><strong>Order ID:</strong> ${order.orderId}</p>
-                    <p><strong>Customer:</strong> ${order.customerName}</p>
-                    <p><strong>Product:</strong> ${order.productName}</p>
-                    <p><strong>Quantity:</strong> ${order.quantity}</p>
-                    <p><strong>Price:</strong> ₹${order.price}</p>
-                    <p><strong>Status:</strong> Completed</p>
-                `;
-                completedOrdersContainer.appendChild(orderElement);
-            });
-        }
+        //     farmerCompletedOrders.forEach(order => {
+        //         let orderElement = document.createElement("div");
+        //         orderElement.classList.add("order");
+        //         orderElement.innerHTML = `
+        //             <p><strong>Order ID:</strong> ${order.orderId}</p>
+        //             <p><strong>Customer:</strong> ${order.customerName}</p>
+        //             <p><strong>Product:</strong> ${order.productName}</p>
+        //             <p><strong>Quantity:</strong> ${order.quantity}</p>
+        //             <p><strong>Price:</strong> ₹${order.price}</p>
+        //             <p><strong>Status:</strong> Completed</p>
+        //         `;
+        //         completedOrdersContainer.appendChild(orderElement);
+        //     });
+        // }
 
-        // Load orders on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            displayIncomingOrders();
-            displayCompletedOrders();
-        });
+        // // Load orders on page load
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     displayIncomingOrders();
+        //     displayCompletedOrders();
+        // });
         function sendMessage() {
             let chatBox = document.getElementById("chatBox");
             let chatInput = document.getElementById("chatInput");
@@ -924,6 +1230,55 @@
                 grid-template-columns: 1fr;
             }
         }
+         /* Warning Popup Styles */
+  .warning-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+  }
+
+
+        .warning-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 400px;
+  }
+
+  .warning-popup-content h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #dc3545;
+  }
+
+  .warning-popup-content p {
+    margin-bottom: 20px;
+  }
+
+  .warning-popup-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    margin: 0 10px;
+  }
+
+  .warning-popup-buttons button:hover {
+    background-color: #0056b3;
+  }
+
     </style>
 </body>
 <script>
