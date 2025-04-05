@@ -89,9 +89,6 @@ app.post("/login", async (req, res) => {
         res.send("Error: Something went wrong.");
     }
 });
-// #################################################
-
-
 const port = 3000;
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
