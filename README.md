@@ -1,88 +1,121 @@
+---
+
+```markdown
 # 🌾 Farmer-Consumer Order Management System
 
-A full-stack web application that bridges the gap between *farmers and consumers*, allowing farmers to manage orders and receive feedback while consumers can place orders and track delivery status. This system enhances local trade, transparency, and digital interaction between food producers and end-users.
+A full-stack web application that bridges the gap between **farmers and consumers**, allowing farmers to manage orders and receive feedback, while consumers can place orders and track delivery status. This system enhances local trade, transparency, and digital interaction between food producers and end-users.
 
 ---
 
 ## 🚀 Features
 
 ### 👨‍🌾 Farmer Dashboard
-- View *incoming orders* from consumers.
-- Display consumer *name, **ordered items, and **order status*.
-- Toggle user profile with *username, email, and location*.
-- Update order statuses (in-progress, delivered, etc.).
+- View **incoming orders** from consumers.
+- Display **consumer name, ordered items, and order status**.
+- Toggle user profile details: **username, email, and location**.
+- Update order statuses (*In Progress*, *Delivered*, etc.).
 
 ### 🛒 Consumer Dashboard
-- Sign up or log in as a consumer.
-- Place orders directly from the product catalog.
-- Track the *status* of their orders.
+- Sign up or log in as a **consumer**.
+- Place orders directly from the **product catalog**.
+- Track the **status of placed orders** in real-time.
 
 ### 🔐 Authentication
-- Secure login and signup with *bcrypt-hashed passwords*.
-- Separate login access for *Farmer* and *Consumer* roles.
+- Secure login and signup with **bcrypt-hashed passwords**.
+- Separate login roles for **Farmer** and **Consumer**.
 
 ### 📦 Order Management
-- Orders stored in *MongoDB* with customer name, items list, and status.
-- Farmers receive real-time incoming order updates (manual refresh).
+- Orders stored in **MongoDB** with customer name, item list, and current status.
+- Farmers receive **real-time updates** (via manual refresh).
 
 ---
 
 ## 🛠 Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| *Node.js* | Backend runtime |
-| *Express.js* | Server framework |
-| *EJS* | Templating engine |
-| *MongoDB + Mongoose* | NoSQL database and ODM |
-| *HTML, CSS, JavaScript* | Frontend design and interactivity |
-| *bcrypt* | Password hashing and security |
+| Technology          | Purpose                          |
+|---------------------|----------------------------------|
+| `Node.js`           | Backend runtime                  |
+| `Express.js`        | Web server framework             |
+| `EJS`               | Templating engine                |
+| `MongoDB + Mongoose`| NoSQL database + ODM             |
+| `HTML, CSS, JS`     | Frontend design & interactivity  |
+| `bcrypt`            | Password hashing for security    |
 
 ---
 
-## 📂 Folder Structure
-project-root/ │ ├── public/ # Static assets (CSS, images) │ ├── views/ # EJS templates (login, signup, dashboards) │ ├── login.ejs │ ├── signup.ejs │ ├── home.ejs # Farmer dashboard │ └── consumer.ejs # Consumer dashboard │ ├── config.js # Mongoose schema and DB connection ├── server.js # Main application server └── package.json
+## 📁 Folder Structure
 
-yaml
-Copy
-Edit
+```
+
+project-root/
+│
+├── public/               # Static assets (CSS, images)
+├── views/                # EJS templates
+│   ├── login.ejs
+│   ├── signup.ejs
+│   ├── home.ejs          # Farmer dashboard
+│   └── consumer.ejs      # Consumer dashboard
+│
+├── config.js             # Mongoose schema and DB config
+├── server.js             # Main server entry point
+└── package.json          # Project metadata & dependencies
+
+````
 
 ---
 
 ## ⚙ Installation & Usage
 
-1. *Clone the Repository*
-   ```bash
-   git clone https://github.com/your-username/farmer-consumer-system.git
-   cd farmer-consumer-system
-Install Dependencies
+### 1. Clone the Repository
 
-bash
-Copy
-Edit
+```bash
+git clone https://github.com/Sivabharathi-A/farmer-consumer-orders.git
+cd farmer-consumer-orders
+````
+
+### 2. Install Dependencies
+
+```bash
 npm install
-Start MongoDB Make sure MongoDB is running locally on port 27017.
+```
 
-Run the App
+### 3. Start MongoDB
 
-bash
-Copy
-Edit
+Ensure MongoDB is running locally (default: `mongodb://localhost:27017`).
+
+### 4. Run the Application
+
+```bash
 node server.js
-Access the App Open your browser and go to:
+```
 
-arduino
-Copy
-Edit
+### 5. Access the App
+
+Open your browser and navigate to:
+
+```
 http://localhost:3000
-🔐 Default User Roles for Testing
-You can register as either a Farmer or Consumer during signup by choosing the respective user type.
+```
 
-📌 Future Enhancements
-Real-time order updates using WebSockets
+---
 
-Product image support and quantity validation
+## 🔐 Default User Roles (for Testing)
 
-SMS/Email notifications for order confirmations
+During signup, you can register as either a **Farmer** or **Consumer** by selecting the appropriate role.
 
-Admin panel for analytics and farmer verification
+---
+
+## 📌 Future Enhancements
+
+* Real-time order updates using **WebSockets**
+* Support for **product images** and **quantity validation**
+* **SMS/Email notifications** for order confirmations
+* **Admin panel** for analytics and farmer verification
+
+---
+
+## 👤 Author
+
+Developed by [SivabharathiA](https://github.com/Sivabharathi-A)
+
+---
