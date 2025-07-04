@@ -1,6 +1,4 @@
 ---
-
-```markdown
 # 🌾 Farmer-Consumer Order Management System
 
 A full-stack web application that bridges the gap between **farmers and consumers**, allowing farmers to manage orders and receive feedback, while consumers can place orders and track delivery status. This system enhances local trade, transparency, and digital interaction between food producers and end-users.
