@@ -125,7 +125,7 @@ Below is a screenshot of the login page and dashboard of the Farmer-Consumer Ord
 
 ## 👤 Author
 
-Developed by [SivabharathiA](https://github.com/Sivabharathi-A)
+Developed by [Siva Bharathi](https://github.com/Sivabharathi-A)
 
 ---
 
