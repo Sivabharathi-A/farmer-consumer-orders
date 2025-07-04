@@ -104,10 +104,14 @@ During signup, you can register as either a **Farmer** or **Consumer** by select
 
 ---
 
+## 🖼️ Preview
+
+Below is a screenshot of the login page and dashboard of the Farmer-Consumer Order Management System:
+
+> *Note: The image above showcases the primary interface. While only the login page and dashboard is shown here, the application includes multiple fully functional features such as dashboards for farmers and consumers seperately, order tracking, review management and secure signup.*
+
 ![Screenshot 2025-03-22 132033](https://github.com/user-attachments/assets/c581ae93-7487-470d-b4a4-215ddfe4d928)
-![Screenshot 2025-03-22 132853](https://github.com/user-attachments/assets/3e355a73-0329-462d-8285-77552929eec8)
 ![Screenshot 2025-03-22 143345](https://github.com/user-attachments/assets/d4a7e57f-70b4-4a44-bdf7-b03a32c24d17)
-![Screenshot 2025-03-22 144056](https://github.com/user-attachments/assets/afbbdf3a-2e2e-4b75-91a1-a7c15d16fa24)
 
 ---
 ## 📌 Future Enhancements
